@@ -10,51 +10,46 @@ const KineticText = () => {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    // Bikhre hue words ko select karna
-    const words = document.querySelectorAll(".kinetic-word");
+    const ctx = gsap.context(() => {
+      const words = gsap.utils.toArray(".kinetic-word");
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top top",
-        end: "+=1500", // Scroll length
-        scrub: 1,
-        pin: true,
-        anticipatePin: 1,
-      },
-    });
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "+=1500", // Original scroll length
+          scrub: 1,
+          pin: true,
+          anticipatePin: 1,
+        },
+      });
 
-    // Animation: Scattering to Perfection
-    tl.fromTo(
-      words,
-      {
-        x: () => (Math.random() - 0.5) * 1000,
-        y: () => (Math.random() - 0.5) * 1000,
-        z: () => Math.random() * -1000,
-        rotationX: () => Math.random() * 360,
-        rotationY: () => Math.random() * 360,
-        opacity: 0,
-      },
-      {
-        x: 0,
-        y: 0,
-        z: 0,
-        rotationX: 0,
-        rotationY: 0,
-        opacity: 1,
-        stagger: 0.05,
-        ease: "power3.out",
-      }
-    );
-
-    // Final text glow effect
-    tl.to(textRef.current, {
-      textShadow: "0 0 30px rgba(255, 140, 0, 0.6)",
-      duration: 0.5,
-    });
+      // Animation: Scattering to Perfection (Original broad values)
+      tl.fromTo(
+        words,
+        {
+          x: () => (Math.random() - 0.5) * 1000,
+          y: () => (Math.random() - 0.5) * 1000,
+          z: () => Math.random() * -1000,
+          rotationX: () => Math.random() * 360,
+          rotationY: () => Math.random() * 360,
+          opacity: 0,
+        },
+        {
+          x: 0,
+          y: 0,
+          z: 0,
+          rotationX: 0,
+          rotationY: 0,
+          opacity: 1,
+          stagger: 0.05,
+          ease: "power3.out",
+        }
+      );
+    }, containerRef);
 
     return () => {
-      ScrollTrigger.getAll().forEach((t) => t.kill());
+      ctx.revert();
     };
   }, []);
 

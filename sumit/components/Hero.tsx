@@ -73,18 +73,18 @@ const SumitHero = () => {
       {/* --- Content: Left Aligned for Portfolio --- */}
       <div className="absolute inset-0 z-20 flex items-center px-10 md:px-24 pointer-events-none">
         <div className="max-w-4xl">
-          <motion.span 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="text-blue-500 font-mono text-lg mb-4 block tracking-widest"
-          >
+          <span className="hero-tagline text-[#ff8c00] font-mono text-sm md:text-base mb-4 block tracking-[0.25em] opacity-0">
             MERN STACK DEVELOPER & TEAM LEAD
-          </motion.span>
-          <h1 className="text-6xl md:text-9xl font-black text-white leading-[0.9] uppercase">
-            Sumit <br /> 
-            <span className="text-transparent border-t-0 stroke-text">Sahu</span>
+          </span>
+          <h1 className="text-6xl md:text-9xl font-black text-white leading-[0.9] uppercase flex flex-col">
+            <span className="overflow-hidden block py-1">
+              <span className="hero-title-line inline-block">Sumit</span>
+            </span>
+            <span className="overflow-hidden block py-1">
+              <span className="hero-title-line inline-block stroke-text">Sahu</span>
+            </span>
           </h1>
-          <p className="mt-8 text-gray-400 text-lg md:text-xl max-w-sm font-light leading-relaxed">
+          <p className="hero-desc mt-8 text-gray-400 text-base md:text-lg max-w-md font-light leading-relaxed opacity-0">
             Crafting high-end digital experiences with code and aesthetic precision.
           </p>
         </div>
@@ -105,7 +105,7 @@ const SumitHero = () => {
           className="w-20 h-20 border-[1px] border-dashed border-white rounded-full flex items-center justify-center"
         />
         {/* Inner Solid Dot */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-white rounded-full shadow-[0_0_20px_white]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-white rounded-full" />
         
         {/* Floating Label */}
         <motion.span 

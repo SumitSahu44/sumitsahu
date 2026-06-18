@@ -53,7 +53,7 @@ const FixedBgSection = () => {
       </section>
 
       {/* 3. NEXT COMPONENT (JO UPAR AAYEGA) */}
-      <section className="relative z-20 bg-[#0a0a0a] min-h-screen w-full py-32 px-10 border-t border-white/10">
+      <section className="relative z-20 bg-[#050505] w-full py-20 px-10 border-t border-white/10">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Content of the next section */}
           <div className="space-y-6">

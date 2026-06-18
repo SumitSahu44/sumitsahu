@@ -94,7 +94,7 @@ const ExperienceSection = () => {
                 }`}
               >
                 {/* Connector Dot */}
-                <div className="absolute left-4 md:left-1/2 transform md:-translate-x-1/2 w-4 h-4 bg-[#ff8c00] rounded-full shadow-[0_0_15px_#ff8c00] z-10" />
+                <div className="absolute left-4 md:left-1/2 transform md:-translate-x-1/2 w-4 h-4 bg-[#ff8c00] border border-[#ff8c00] rounded-full z-10" />
 
                 <div className={`w-full md:w-5/12 pl-12 md:pl-0 ${index % 2 === 0 ? "md:pl-12" : "md:pr-12 text-right"}`}>
                   <span className="text-[#ff8c00] font-mono text-sm tracking-widest">{exp.date}</span>

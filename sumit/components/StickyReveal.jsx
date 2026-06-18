@@ -27,7 +27,7 @@ const StickyReveal = () => {
             opacity,
             backgroundImage: `url('https://images.unsplash.com/photo-1565687981296-535f09db714e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGNvZGVyJTIwcHVzaW5nJTIwYm91bmRhcmllfGVufDB8fDB8fHww')`, // Tumhari orange lighting wali image
           }}
-          className="relative w-full h-full bg-cover bg-center bg-no-repeat shadow-[0_0_100px_rgba(255,140,0,0.2)]"
+          className="relative w-full h-full bg-cover bg-center bg-no-repeat"
         >
           {/* Overlay Content on Image */}
           <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center px-4">

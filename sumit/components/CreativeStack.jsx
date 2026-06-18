@@ -10,32 +10,38 @@ const CreativeStack = () => {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    const cards = gsap.utils.toArray(".stack-card");
-    
-    // 3D Timeline Animation
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: triggerRef.current,
-        start: "top top",
-        end: "+=3000", // Scroll ki length
-        scrub: 1,
-        pin: true, // Screen lock ho jayegi cards reveal hone tak
-        anticipatePin: 1,
-      }
-    });
+    const ctx = gsap.context(() => {
+      const cards = gsap.utils.toArray(".stack-card");
+      
+      // 3D Timeline Animation
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: triggerRef.current,
+          start: "top top",
+          end: "+=3000", // Scroll ki length
+          scrub: 1,
+          pin: true, // Screen lock ho jayegi cards reveal hone tak
+          anticipatePin: 1,
+        }
+      });
 
-    // Cards spread logic
-    tl.to(cards, {
-      x: (i) => (i - (cards.length - 1) / 2) * 350, // Horizontal spread
-      rotateY: (i) => (i - (cards.length - 1) / 2) * 15, // 3D Tilt
-      z: (i) => Math.abs(i - (cards.length - 1) / 2) * -100, // Depth
-      rotateZ: (i) => (i - (cards.length - 1) / 2) * 5, // Casual fan effect
-      ease: "power2.inOut",
-      stagger: 0.1
-    });
+      // Responsive cards spread logic
+      tl.to(cards, {
+        x: (i) => {
+          const isMobile = window.innerWidth < 768;
+          const spreadWidth = isMobile ? window.innerWidth * 0.32 : 320;
+          return (i - (cards.length - 1) / 2) * spreadWidth;
+        },
+        rotateY: (i) => (i - (cards.length - 1) / 2) * (window.innerWidth < 768 ? 8 : 12),
+        z: (i) => Math.abs(i - (cards.length - 1) / 2) * (window.innerWidth < 768 ? -40 : -80),
+        rotateZ: (i) => (i - (cards.length - 1) / 2) * (window.innerWidth < 768 ? 3 : 5),
+        ease: "power2.inOut",
+        stagger: 0.1
+      });
+    }, triggerRef);
 
     return () => {
-      ScrollTrigger.getAll().forEach(t => t.kill());
+      ctx.revert();
     };
   }, []);
 
@@ -48,12 +54,7 @@ const CreativeStack = () => {
 
   return (
     <div ref={triggerRef} className="relative h-screen w-full bg-[#050505] overflow-hidden">
-      {/* Background Heading */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <h2 className="text-[20vw] font-black text-white/[0.03] uppercase select-none">
-          Capabilities
-        </h2>
-      </div>
+
 
       {/* Cards Container */}
       <div 
@@ -64,10 +65,10 @@ const CreativeStack = () => {
         {data.map((item, index) => (
           <div
             key={index}
-            className="stack-card absolute w-[300px] h-[450px] md:w-[350px] md:h-[500px] rounded-[2rem] p-1 border border-white/10 shadow-2xl transition-all duration-500 hover:border-[#ff8c00]/50"
+            className="stack-card absolute w-[260px] h-[390px] sm:w-[300px] sm:h-[450px] md:w-[350px] md:h-[500px] rounded-3xl p-1 border border-white/10 transition-all duration-500 hover:border-[#ff8c00]/30"
           >
             {/* Card Content */}
-            <div className={`w-full h-full rounded-[1.8rem] bg-gradient-to-br ${item.color} to-black p-8 flex flex-col justify-between backdrop-blur-3xl relative overflow-hidden`}>
+            <div className={`w-full h-full rounded-3xl bg-gradient-to-br ${item.color} to-black p-6 sm:p-8 flex flex-col justify-between backdrop-blur-3xl relative overflow-hidden`}>
               
               {/* Glossy Overlay */}
               <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-tr from-white/5 to-transparent pointer-events-none" />
