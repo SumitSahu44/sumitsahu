@@ -11,7 +11,7 @@ const WorkSection = () => {
   useEffect(() => {
     // 1. Initialize Smooth Scroll (Lenis)
     const lenis = new Lenis();
-    function raf(time) {
+    function raf(time: number) {
       lenis.raf(time);
       requestAnimationFrame(raf);
     }

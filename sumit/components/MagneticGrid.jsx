@@ -52,13 +52,13 @@ const MagneticGrid = () => {
   ];
 
   return (
-    <section className="py-24 bg-[#050505] text-white px-6 md:px-20 overflow-hidden">
+    <section className="py-24 bg-white text-black px-6 md:px-20 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         
         {/* Section Heading */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-6">
-          <h2 className="text-5xl md:text-8xl font-black uppercase leading-none tracking-tighter">
-            Where <span className="text-[#ff8c00]">Logic</span> <br /> Meets <span className="italic font-light opacity-50 underline decoration-[#ff8c00]">Art</span>
+          <h2 className="text-5xl md:text-8xl font-black uppercase leading-none tracking-tighter text-black">
+            Where <span className="text-[#ff8c00]">Logic</span> <br /> Meets <span className="italic font-light opacity-40 underline decoration-[#ff8c00]">Art</span>
           </h2>
           <p className="text-gray-500 max-w-xs font-mono text-sm leading-relaxed">
             Hover over the artifacts to feel the digital gravity. Crafting unique MERN experiences.
@@ -66,31 +66,34 @@ const MagneticGrid = () => {
         </div>
 
         {/* The Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-[1px] bg-white/10 rounded-3xl overflow-hidden border border-white/5 shadow-2xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-[1px] bg-black/10 rounded-3xl overflow-hidden border border-black/5 shadow-2xl">
           {projects.map((item, index) => (
             <Magnetic key={index} strength={0.15}> {/* Wraps each item */}
-              <div className="group relative w-full h-[350px] md:h-[400px] bg-[#0d0d0d] p-10 flex flex-col justify-between overflow-hidden cursor-pointer transition-colors duration-500 hover:bg-[#080808]">
+              <div className="group relative w-full h-[350px] md:h-[400px] bg-white p-10 flex flex-col justify-between overflow-hidden cursor-pointer transition-colors duration-500 hover:bg-gray-50">
                 
-                {/* Background Image Reveal */}
+                {/* Background Image (Vibrant & Masked) */}
                 <motion.img 
                   src={item.img} 
                   alt={item.title} 
-                  className="absolute inset-0 z-0 w-full h-full object-cover grayscale opacity-0 group-hover:opacity-40 group-hover:scale-110 transition-all duration-700 ease-out" 
+                  className="absolute inset-0 z-0 w-full h-full object-cover opacity-15 group-hover:opacity-65 group-hover:scale-105 transition-all duration-700 ease-out" 
                 />
+
+                {/* Gradient Overlay to protect text legibility on the left while showing image on the right */}
+                <div className="absolute inset-0 z-0 bg-gradient-to-r from-white via-white/80 to-white/5 pointer-events-none" />
 
                 {/* Content - Top Part */}
                 <div className="relative z-10 flex justify-between items-start">
                   <div className="flex flex-col gap-1">
-                    <span className="text-[10px] text-[#ff8c00] font-mono uppercase tracking-[0.3em]">
+                    <span className="text-[10px] text-[#ff8c00] font-mono uppercase tracking-[0.3em] font-bold">
                       Artifact 0{index + 1}
                     </span>
-                    <h3 className="text-3xl md:text-5xl font-bold uppercase tracking-tighter group-hover:tracking-wider transition-all duration-500">
+                    <h3 className="text-3xl md:text-5xl font-bold uppercase tracking-tighter text-black group-hover:tracking-wider transition-all duration-500">
                       {item.title}
                     </h3>
                   </div>
                   
                   {/* Arrow Icon */}
-                  <div className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/50 group-hover:border-[#ff8c00]/50 group-hover:text-[#ff8c00] group-hover:rotate-45 transition-all duration-300">
+                  <div className="w-10 h-10 rounded-full border border-black/10 flex items-center justify-center text-black/40 group-hover:border-[#ff8c00]/50 group-hover:text-[#ff8c00] group-hover:rotate-45 transition-all duration-300">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>

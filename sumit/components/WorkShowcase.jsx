@@ -87,7 +87,16 @@ const WorkShowcase = () => {
                 className="w-full h-[52vh] sm:h-[60vh] md:h-[65vh] group relative"
               >
                 {/* CARD INNER */}
-                <div className="relative w-full h-full bg-[#0d0d0d] rounded-3xl md:rounded-[2.5rem] overflow-hidden border border-white/5 transition-colors group-hover:border-[#ff8c00]/30 shadow-2xl">
+                <div 
+                  className="relative w-full h-full bg-[#0d0d0d] rounded-3xl md:rounded-[2.5rem] overflow-hidden border border-white/5 transition-colors group-hover:border-[#ff8c00]/30 shadow-2xl"
+                  style={{
+                    WebkitMaskImage: "-webkit-radial-gradient(white, black)",
+                    WebkitBackfaceVisibility: "hidden",
+                    backfaceVisibility: "hidden",
+                    transform: "translate3d(0, 0, 0)",
+                    isolation: "isolate",
+                  }}
+                >
                   
                   {/* IMAGE LAYER */}
                   <motion.div 

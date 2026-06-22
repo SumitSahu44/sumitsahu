@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import LayoutWrapper from "@/components/LayoutWrapper";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Mr_De_Haviland } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -13,7 +13,11 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-
+const signatureFont = Mr_De_Haviland({
+  weight: "400",
+  variable: "--font-signature",
+  subsets: ["latin"],
+});
 
 export const metadata = {
   title: "Sumit Sahu | Full Stack Developer Indore",
@@ -29,7 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${signatureFont.variable} antialiased`}
       >
         <LayoutWrapper>
         {children}
@@ -38,3 +42,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+

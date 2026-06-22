@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import Link from "next/link";
 
 interface NavbarProps {
   onMenuToggle: () => void;
@@ -11,26 +12,12 @@ export default function Navbar({ onMenuToggle, isMenuOpen }: NavbarProps) {
     <header className="nav-container fixed top-0 left-0 w-full z-[100] px-6 py-6 md:px-12 md:py-8 flex justify-between items-center pointer-events-none">
       {/* Landing Signature Logo */}
       <div className="nav-logo-sig pointer-events-auto bg-black/40 backdrop-blur-xl border border-white/10 px-5 py-2.5 rounded-2xl shadow-xl transition-all duration-300 hover:border-[#ff8c00]/40">
-        <a href="#" className="text-xl font-serif italic text-white tracking-tighter block">
+        <Link href="/" className="text-xl font-serif italic text-white tracking-tighter block">
           Sumit <span className="text-[#ff8c00] font-sans font-bold not-italic">SAHU</span>
-        </a>
+        </Link>
       </div>
 
-      {/* Glass Menu */}
-      <nav className="hidden md:flex pointer-events-auto items-center bg-black/50 backdrop-blur-2xl border border-white/10 px-8 py-3.5 rounded-full gap-8 shadow-2xl">
-        {['Work', 'Services', 'About', 'Experience'].map((item) => (
-          <a
-            key={item}
-            href={`#${item.toLowerCase() === 'services' ? 'capabilities' : item.toLowerCase()}`}
-            className="group relative text-xs font-semibold uppercase tracking-[0.2em] text-white/70 hover:text-white transition-colors duration-300"
-          >
-            {item}
-            <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-[#ff8c00] rounded-full transition-all duration-300 group-hover:w-8" />
-          </a>
-        ))}
-      </nav>
-
-      {/* CTA & Mobile Toggle */}
+      {/* CTA & Mobile/Desktop Toggle */}
       <div className="pointer-events-auto flex items-center gap-4">
         <a
           href="mailto:sumitsahu5328@gmail.com"
@@ -39,7 +26,7 @@ export default function Navbar({ onMenuToggle, isMenuOpen }: NavbarProps) {
           Let's Talk
         </a>
         
-        {/* Mobile Toggle Button */}
+        {/* Hamburger Toggle Button */}
         <button
           onClick={onMenuToggle}
           aria-label="Toggle Menu"
@@ -64,4 +51,5 @@ export default function Navbar({ onMenuToggle, isMenuOpen }: NavbarProps) {
       </div>
     </header>
   );
-}
+}
+

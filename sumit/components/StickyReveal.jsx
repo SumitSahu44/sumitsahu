@@ -1,31 +1,17 @@
 "use client";
 import React, { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 
 const StickyReveal = () => {
   const containerRef = useRef(null);
-
-  // Scroll tracking for the section
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
-
-  // Image scale aur border radius animation (Scroll ke saath)
-  const scale = useTransform(scrollYProgress, [0, 0.5], [0.8, 1]);
-  const borderRadius = useTransform(scrollYProgress, [0, 0.5], ["40px", "0px"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0.8]);
 
   return (
     <div ref={containerRef} className="relative h-[200vh] bg-[#050505]">
       {/* STICKY IMAGE SECTION */}
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
-        <motion.div
+        <div
           style={{
-            scale,
-            borderRadius,
-            opacity,
-            backgroundImage: `url('https://images.unsplash.com/photo-1565687981296-535f09db714e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGNvZGVyJTIwcHVzaW5nJTIwYm91bmRhcmllfGVufDB8fDB8fHww')`, // Tumhari orange lighting wali image
+            backgroundImage: `url('https://images.unsplash.com/photo-1565687981296-535f09db714e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGNvZGVyJTIwcHVzaW5nJTIwYm91bmRhcmllfGVufDB8fDB8fHww')`,
           }}
           className="relative w-full h-full bg-cover bg-center bg-no-repeat"
         >
@@ -43,11 +29,11 @@ const StickyReveal = () => {
               Crafting digital excellence where every pixel tells a story of innovation.
             </p>
           </div>
-        </motion.div>
+        </div>
       </div>
 
-      {/* NEXT COMPONENT (JO UPAR SE AAYEGA) */}
-      <div className="relative z-20 bg-white text-black min-h-screen w-full px-6 py-24 rounded-t-[3rem] md:rounded-t-[5rem] shadow-[0_-50px_100px_rgba(0,0,0,0.5)]">
+      {/* NEXT COMPONENT */}
+      <div className="relative z-20 bg-white text-black min-h-screen w-full px-6 py-24">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
             <div>

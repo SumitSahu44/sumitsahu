@@ -11,8 +11,8 @@ const FixedBgSection = () => {
     offset: ["start end", "end start"],
   });
 
-  // Text ko thoda extra speed se upar bhejne ke liye
-  const textY = useTransform(scrollYProgress, [0, 1], [0, -200]);
+  // Restrict the parallax translation range to keep the text centered and prevent top collisions
+  const textY = useTransform(scrollYProgress, [0, 1], [40, -40]);
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
 
   return (
@@ -37,7 +37,7 @@ const FixedBgSection = () => {
         {/* 2. THE FLOATING TEXT CONTENT */}
         <motion.div 
           style={{ y: textY, opacity }}
-          className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6"
+          className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6 pt-28 pb-16"
         >
           <span className="text-[#ff8c00] font-mono tracking-[0.5em] mb-4 uppercase text-sm">
             About My Vision

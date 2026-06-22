@@ -12,7 +12,7 @@ const ExperienceSection = () => {
 
     // Fade in animation for each timeline item
     const items = gsap.utils.toArray(".timeline-item");
-    items.forEach((item) => {
+    items.forEach((item: any) => {
       gsap.fromTo(
         item,
         { opacity: 0, x: -50 },
