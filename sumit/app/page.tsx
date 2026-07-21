@@ -1,5 +1,7 @@
-import Hero from "@/components/Hero";
+import Hero from "@/components/SimpleHero";
+import OverviewSection from "@/components/OverviewSection";
 import WorkShowcase from "@/components/WorkShowcase";
+import VideoRevealSection from "@/components/VideoRevealSection";
 import KineticText from "@/components/KineticText";
 import MagneticGrid from "@/components/MagneticGrid"; 
 import StickyReveal from "@/components/StickyReveal";
@@ -10,7 +12,9 @@ export default function Home() {
   return (
     <main>
       <Hero />
+      <OverviewSection />
       <WorkShowcase />  
+      <VideoRevealSection />
       <StickyReveal />
       <MagneticGrid />
       <FixedBgSection />  

@@ -104,4 +104,315 @@ html.lenis, html.lenis body {
   animation: marquee-reverse 30s linear infinite;
 }
 
+/* Responsive alignment for Video Reveal Pill */
+.video-reveal-pill {
+  top: calc(50% + 5.2vw);
+}
+@media (min-width: 1024px) {
+  .video-reveal-pill {
+    top: calc(50% + 58px) !important;
+  }
+}
 
+/* ============================================================
+   SCROLL IMAGE SEQUENCE — Cinematic 3D Scroll Component
+   ============================================================ */
+
+.scroll-seq-container {
+  position: relative;
+  width: 100%;
+}
+
+.scroll-seq-sticky {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  perspective: 800px;
+  background: #000;
+}
+
+/* ---- Stage & Frames ---- */
+.scroll-seq-stage {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+.scroll-seq-frame {
+  position: absolute;
+  inset: 0;
+  will-change: transform, opacity;
+}
+
+/* ---- Overlays ---- */
+.scroll-seq-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.25) 0%,
+    transparent 30%,
+    transparent 60%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+  z-index: 20;
+  pointer-events: none;
+}
+
+.scroll-seq-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 40%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+  z-index: 21;
+  pointer-events: none;
+}
+
+/* ---- Counter (top-left) ---- */
+.scroll-seq-counter {
+  position: absolute;
+  top: 2rem;
+  left: 2.5rem;
+  z-index: 50;
+  display: flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  font-family: var(--font-geist-mono), monospace;
+  letter-spacing: 0.05em;
+}
+
+.scroll-seq-counter-num {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+  text-shadow: 0 0 30px rgba(255, 140, 0, 0.6);
+}
+
+.scroll-seq-counter-sep {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0 0.1rem;
+}
+
+.scroll-seq-counter-total {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* ---- Central Title ---- */
+.scroll-seq-title-wrap {
+  position: absolute;
+  bottom: 5rem;
+  left: 2.5rem;
+  z-index: 50;
+  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+.scroll-seq-label {
+  font-size: clamp(3rem, 10vw, 8rem);
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.85);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  text-transform: uppercase;
+  font-family: var(--font-geist-sans), sans-serif;
+  text-shadow: none;
+  user-select: none;
+}
+
+/* ---- Progress Bar (bottom) ---- */
+.scroll-seq-progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  z-index: 60;
+}
+
+.scroll-seq-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff8c00, #ff4500);
+  transition: width 0.1s linear;
+  box-shadow: 0 0 12px rgba(255, 140, 0, 0.8);
+}
+
+/* ---- Dot Indicators ---- */
+.scroll-seq-dots {
+  position: absolute;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.scroll-seq-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.scroll-seq-dot.active {
+  background: #ff8c00;
+  box-shadow: 0 0 8px rgba(255, 140, 0, 0.8);
+  transform: scale(1.8);
+  height: 16px;
+  border-radius: 3px;
+}
+
+/* ---- Scroll Hint ---- */
+.scroll-seq-hint {
+  position: absolute;
+  bottom: 4rem;
+  right: 2.5rem;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-family: var(--font-geist-mono), monospace;
+  animation: seq-hint-pulse 2s ease-in-out infinite;
+}
+
+.scroll-seq-hint-arrow {
+  font-size: 1.2rem;
+  animation: seq-hint-bounce 1.5s ease-in-out infinite;
+}
+
+@keyframes seq-hint-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+@keyframes seq-hint-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* ---- Right side Ticker ---- */
+.scroll-seq-ticker {
+  position: absolute;
+  top: 2rem;
+  right: 3.5rem;
+  z-index: 50;
+  height: 56px;
+  overflow: hidden;
+  width: 120px;
+  text-align: right;
+}
+
+.scroll-seq-ticker-inner {
+  will-change: transform;
+}
+
+.scroll-seq-ticker-item {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  font-family: var(--font-geist-mono), monospace;
+}
+
+/* ---- Crosshair ---- */
+.scroll-seq-crosshair {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.crosshair-h {
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.04);
+  top: 50%;
+}
+
+.crosshair-v {
+  position: absolute;
+  height: 100%;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.04);
+  left: 50%;
+}
+
+.crosshair-ring {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+  will-change: transform, opacity;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* ---- Corner Brackets ---- */
+.scroll-seq-bracket {
+  position: absolute;
+  z-index: 40;
+  width: 32px;
+  height: 32px;
+  pointer-events: none;
+}
+
+.scroll-seq-bracket.tl {
+  top: 1.5rem;
+  left: 1.5rem;
+  border-top: 1.5px solid rgba(255, 140, 0, 0.5);
+  border-left: 1.5px solid rgba(255, 140, 0, 0.5);
+}
+.scroll-seq-bracket.tr {
+  top: 1.5rem;
+  right: 1.5rem;
+  border-top: 1.5px solid rgba(255, 140, 0, 0.5);
+  border-right: 1.5px solid rgba(255, 140, 0, 0.5);
+}
+.scroll-seq-bracket.bl {
+  bottom: 1.5rem;
+  left: 1.5rem;
+  border-bottom: 1.5px solid rgba(255, 140, 0, 0.5);
+  border-left: 1.5px solid rgba(255, 140, 0, 0.5);
+}
+.scroll-seq-bracket.br {
+  bottom: 1.5rem;
+  right: 1.5rem;
+  border-bottom: 1.5px solid rgba(255, 140, 0, 0.5);
+  border-right: 1.5px solid rgba(255, 140, 0, 0.5);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 640px) {
+  .scroll-seq-counter-num { font-size: 2.2rem; }
+  .scroll-seq-label { font-size: clamp(2rem, 15vw, 4rem); }
+  .scroll-seq-ticker { display: none; }
+  .scroll-seq-title-wrap { bottom: 4rem; left: 1.2rem; }
+  .scroll-seq-counter { top: 1.2rem; left: 1.2rem; }
+}

@@ -45,7 +45,7 @@ export default function Footer() {
             Have a project in mind? <br />
             <a 
               href="mailto:sumitsahu5328@gmail.com" 
-              className="text-[#ff8c00] hover:text-[#ff4500] transition-colors duration-300 font-serif italic underline decoration-[#ff8c00]/30 hover:decoration-[#ff4500]/50"
+              className="text-[#ff8c00] hover:text-[#ff4500] transition-colors duration-300 font-sans font-bold underline decoration-[#ff8c00]/30 hover:decoration-[#ff4500]/50"
             >
               Let's work together.
             </a>
@@ -61,7 +61,7 @@ export default function Footer() {
           {/* Brand & Live Info Column */}
           <div className="flex flex-col justify-between h-full space-y-8 md:space-y-0">
             <div className="space-y-4">
-              <span className="text-2xl font-serif italic text-white tracking-tighter block">
+              <span className="text-2xl font-sans font-semibold text-white tracking-tighter block">
                 Sumit <span className="text-[#ff8c00] font-sans font-bold not-italic">SAHU</span>
               </span>
               <p className="text-gray-500 text-xs leading-relaxed max-w-xs font-light">

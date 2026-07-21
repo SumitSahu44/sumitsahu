@@ -80,7 +80,7 @@ const KineticText = () => {
             className="kinetic-word inline-block text-5xl md:text-8xl font-black uppercase text-white tracking-tighter"
           >
             {word === "art" ? (
-              <span className="text-[#ff8c00] italic font-light lowercase font-serif">
+              <span className="text-[#ff8c00]">
                 {word}
               </span>
             ) : (

@@ -43,7 +43,7 @@ const SumitHero = () => {
   // Parallax translation offsets based on cursor coordinates
   const bgX = useTransform(smoothX, [0, dimensions.width], [-12, 12]);
   const bgY = useTransform(smoothY, [0, dimensions.height], [-12, 12]);
-  
+
   const textX = useTransform(smoothX, [0, dimensions.width], [-24, 24]);
   const textY = useTransform(smoothY, [0, dimensions.height], [-24, 24]);
 
@@ -146,7 +146,7 @@ const SumitHero = () => {
 
     const animateParticles = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
+
       const mx = mouseX.get();
       const my = mouseY.get();
 
@@ -154,7 +154,7 @@ const SumitHero = () => {
         const dx = mx - p.x;
         const dy = my - p.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        
+
         // Repel particles when cursor gets close
         const forceRadius = 150;
         if (dist < forceRadius) {
@@ -329,7 +329,7 @@ const SumitHero = () => {
       </motion.div>
 
       {/* --- Content: Left Aligned for Portfolio --- */}
-      <motion.div 
+      <motion.div
         className="absolute inset-0 z-20 flex items-center px-6 md:px-24 pointer-events-none"
         style={{ x: textX, y: textY }}
       >
@@ -357,19 +357,19 @@ const SumitHero = () => {
         style={{ x: smoothX, y: smoothY, translateX: "-50%", translateY: "-50%" }}
       >
         {/* Main Circle */}
-        <motion.div 
-          animate={{ 
+        <motion.div
+          animate={{
             scale: isHovered ? [1, 1.15, 1] : 0,
-            rotate: isHovered ? 360 : 0 
+            rotate: isHovered ? 360 : 0
           }}
           transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
           className="w-16 h-16 border-[1px] border-dashed border-white rounded-full flex items-center justify-center"
         />
         {/* Inner Solid Dot */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-white rounded-full" />
-        
+
         {/* Floating Label */}
-        <motion.span 
+        <motion.span
           animate={{ y: isHovered ? 35 : 20, opacity: isHovered ? 0.8 : 0 }}
           className="absolute text-[9px] text-white font-mono tracking-widest uppercase w-max"
         >
@@ -383,7 +383,7 @@ const SumitHero = () => {
           Scroll Down
         </span>
         <div className="w-[20px] h-[32px] border border-white/20 rounded-full flex justify-center p-[4px]">
-          <motion.div 
+          <motion.div
             animate={{ y: [0, 8, 0] }}
             transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
             className="w-1 h-1.5 bg-[#ff8c00] rounded-full"

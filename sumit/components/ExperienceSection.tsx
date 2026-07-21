@@ -76,7 +76,7 @@ const ExperienceSection = () => {
 
       <div className="max-w-6xl mx-auto">
         <h2 className="text-4xl md:text-7xl font-black uppercase mb-20 tracking-tighter">
-          My <span className="text-[#ff8c00] italic">Journey</span>
+          My <span className="text-[#ff8c00]">Journey</span>
         </h2>
 
         <div className="relative">

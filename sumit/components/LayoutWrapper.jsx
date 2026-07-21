@@ -12,18 +12,9 @@ const LayoutWrapper = ({ children }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [timeString, setTimeString] = useState("");
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
 
   const preloaderRef = useRef(null);
   const menuCurtainRef = useRef(null);
-
-  const words = [
-    "CREATIVE ARCHITECTURE",
-    "MERN STACK ENGINE",
-    "INTERACTIVE MOTION",
-    "AESTHETIC DESIGN",
-    "SUMIT SAHU"
-  ];
 
   // Menu items with high-end project images
   const menuItems = [
@@ -79,22 +70,7 @@ const LayoutWrapper = ({ children }) => {
     return () => clearInterval(interval);
   }, []);
 
-  // 3. Typographic Word Cycler
-  useEffect(() => {
-    if (progress === 100) {
-      setCurrentWordIndex(words.length - 1);
-      return;
-    }
-    const interval = setInterval(() => {
-      setCurrentWordIndex((prev) => {
-        if (prev < words.length - 2) {
-          return prev + 1;
-        }
-        return 0;
-      });
-    }, 280);
-    return () => clearInterval(interval);
-  }, [progress]);
+
 
   // 4. Global Lenis scroll manager
   useEffect(() => {
@@ -126,34 +102,34 @@ const LayoutWrapper = ({ children }) => {
     }
   }, [menuOpen]);
 
-  // 6. GSAP Preloader Staggered Panels Curtain Reveal Timeline
+  // 6. GSAP Preloader Curve Reveal Timeline
   useEffect(() => {
     if (progress === 100) {
       const tl = gsap.timeline({
         onComplete: () => setLoading(false),
       });
 
-      // 1. Fade out the text rows
-      tl.to([".preloader-top-row", ".preloader-center-row", ".preloader-bottom-row"], {
+      // 1. Fade out the center content
+      tl.to(".preloader-content", {
         opacity: 0,
-        y: -40,
-        duration: 0.6,
-        stagger: 0.1,
-        ease: "power3.inOut"
-      })
-      // 2. Slide up the vertical panels one by one
-      .to(".preloader-panel", {
-        yPercent: -100,
-        duration: 1.2,
-        stagger: {
-          each: 0.08,
-          from: "start"
-        },
+        y: -50,
+        duration: 0.8,
         ease: "power4.inOut"
-      }, "-=0.3")
+      })
+      // 2. Animate the liquid curtain path to pull up
+      .to("#preloader-path", {
+        attr: { d: "M 0 0 L 100 0 L 100 0 Q 50 50 0 0 Z" },
+        duration: 0.8,
+        ease: "power3.in"
+      }, "-=0.2")
+      .to("#preloader-path", {
+        attr: { d: "M 0 0 L 100 0 L 100 0 Q 50 0 0 0 Z" },
+        duration: 0.4,
+        ease: "power2.out"
+      })
       // 3. Reveal page components
       .fromTo(".nav-container", {
-        y: -100,
+        y: -50,
         opacity: 0,
       }, {
         y: 0,
@@ -161,9 +137,9 @@ const LayoutWrapper = ({ children }) => {
         duration: 0.8,
         ease: "power3.out",
         clearProps: "all"
-      }, "-=0.4")
+      }, "-=0.6")
       .fromTo(".hero-tagline", {
-        y: 20,
+        y: 30,
         opacity: 0,
       }, {
         y: 0,
@@ -260,52 +236,40 @@ const LayoutWrapper = ({ children }) => {
         {loading && (
           <div
             ref={preloaderRef}
-            className="fixed inset-0 z-[999] flex items-stretch overflow-hidden select-none pointer-events-none"
+            className="fixed inset-0 z-[999] flex items-center justify-center overflow-hidden select-none pointer-events-auto"
           >
-            {/* 5 Shaded Columns */}
-            <div className="absolute inset-0 flex items-stretch z-0">
-              {[0, 1, 2, 3, 4].map((i) => (
-                <div
-                  key={i}
-                  className="preloader-panel flex-1 relative"
-                  style={{
-                    backgroundColor: i % 2 === 0 ? "#050505" : "#0d0d0d",
-                  }}
-                >
-                  {/* Bottom neon accent trace line */}
-                  <div className="absolute bottom-0 left-0 w-full h-[2px] bg-[#ff8c00] shadow-[0_0_15px_#ff8c00]" />
-                </div>
-              ))}
+            {/* Liquid SVG Curtain background */}
+            <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
+              <svg className="w-full h-full fill-[#050505]" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path id="preloader-path" d="M 0 0 L 100 0 L 100 100 Q 50 100 0 100 Z" />
+              </svg>
             </div>
 
-            {/* Content Container (Layered on top of panels) */}
-            <div className="absolute inset-0 flex flex-col justify-between p-8 md:p-16 z-10 pointer-events-auto">
-              
-              {/* Top Row */}
-              <div className="preloader-top-row flex justify-between items-center text-white/40 font-mono text-[9px] md:text-xs tracking-[0.3em]">
-                <span>SUMIT SAHU — PORTFOLIO ENGINE v2.0</span>
-                <span>SYSTEM INITIALIZING</span>
-              </div>
+            {/* Premium Center Content */}
+            <div className="preloader-content relative z-10 flex flex-col items-center justify-center text-center p-6 pointer-events-none">
+              {/* Subtle radial glow */}
+              <div className="absolute w-[500px] h-[500px] bg-radial from-[#ff8c00]/5 to-transparent blur-3xl pointer-events-none" />
 
-              {/* Center Row: Typography Term & Massive Counter */}
-              <div className="preloader-center-row flex flex-col md:flex-row justify-between items-start md:items-end w-full max-w-7xl mx-auto gap-8">
-                <div className="overflow-hidden h-[12vh] flex items-center">
-                  <span className="preloader-title text-3xl sm:text-4xl md:text-6xl font-black text-white tracking-wider uppercase leading-none">
-                    {words[currentWordIndex]}
-                  </span>
+              {/* Elegant Typography Title with progress-based clipping */}
+              <div className="relative font-sans font-black tracking-[0.25em] text-4xl sm:text-6xl md:text-8xl uppercase select-none">
+                {/* Background outline */}
+                <div className="stroke-text select-none text-white/10">
+                  SUMIT SAHU
                 </div>
-                <div className="font-sans font-black text-[12vw] leading-none text-white tracking-tighter flex items-baseline select-none">
-                  <span className="preloader-counter">{progress}</span>
-                  <span className="text-[#ff8c00] text-3xl md:text-5xl font-mono ml-2">%</span>
+                {/* Foreground fill */}
+                <div 
+                  className="absolute top-0 left-0 text-white overflow-hidden select-none whitespace-nowrap transition-all duration-75 ease-out"
+                  style={{ width: `${progress}%`, borderRight: progress < 100 ? "2px solid #ff8c00" : "none" }}
+                >
+                  SUMIT SAHU
                 </div>
               </div>
 
-              {/* Bottom Row */}
-              <div className="preloader-bottom-row flex flex-col md:flex-row justify-between items-start md:items-center text-white/40 font-mono text-[9px] md:text-xs tracking-[0.25em] gap-2">
-                <span>© 2026 / ALL RIGHTS RESERVED</span>
-                <span>POLISHING GRAPHICS & PIXELS</span>
+              {/* Minimal status detail & percentage */}
+              <div className="w-64 sm:w-80 mt-8 flex justify-between items-center text-[10px] font-mono tracking-[0.3em] text-white/40">
+                <span className="text-[#ff8c00] font-semibold animate-pulse">SYSTEM RUNNING</span>
+                <span>{progress}%</span>
               </div>
-
             </div>
           </div>
         )}
@@ -432,7 +396,7 @@ const LayoutWrapper = ({ children }) => {
       </div>
 
       {/* --- MAIN PAGE CONTENT --- */}
-      <main className={loading ? "opacity-0" : "opacity-100 transition-opacity duration-1000"}>
+      <main className="opacity-100">
         {children}
       </main>
     </>

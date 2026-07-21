@@ -57,15 +57,15 @@ const FixedBgSection = () => {
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Content of the next section */}
           <div className="space-y-6">
-            <h3 className="text-[#ff8c00] text-4xl font-bold italic">Leadership.</h3>
+            <h3 className="text-[#ff8c00] text-4xl font-bold">Leadership.</h3>
             <p className="text-gray-400">Managing a 3-member team to deliver pixel-perfect solutions for global brands like Parekh Group.</p>
           </div>
           <div className="space-y-6">
-            <h3 className="text-[#ff8c00] text-4xl font-bold italic">Precision.</h3>
+            <h3 className="text-[#ff8c00] text-4xl font-bold">Precision.</h3>
             <p className="text-gray-400">Optimizing WordPress and React apps for lightning-fast load times and SEO dominance.</p>
           </div>
           <div className="space-y-6">
-            <h3 className="text-[#ff8c00] text-4xl font-bold italic">Innovation.</h3>
+            <h3 className="text-[#ff8c00] text-4xl font-bold">Innovation.</h3>
             <p className="text-gray-400">Integrating GSAP, Three.js, and Framer Motion to create websites that don't just work—they perform.</p>
           </div>
         </div>

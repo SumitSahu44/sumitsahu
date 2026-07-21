@@ -58,7 +58,7 @@ const MagneticGrid = () => {
         {/* Section Heading */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-6">
           <h2 className="text-5xl md:text-8xl font-black uppercase leading-none tracking-tighter text-black">
-            Where <span className="text-[#ff8c00]">Logic</span> <br /> Meets <span className="italic font-light opacity-40 underline decoration-[#ff8c00]">Art</span>
+            Where <span className="text-[#ff8c00]">Logic</span> <br /> Meets <span className="font-light opacity-40 underline decoration-[#ff8c00]">Art</span>
           </h2>
           <p className="text-gray-500 max-w-xs font-mono text-sm leading-relaxed">
             Hover over the artifacts to feel the digital gravity. Crafting unique MERN experiences.
@@ -102,7 +102,7 @@ const MagneticGrid = () => {
 
                 {/* Content - Bottom Part */}
                 <div className="relative z-10 flex justify-between items-end">
-                    <span className="text-xl text-gray-500 font-light italic">
+                    <span className="text-xl text-gray-500 font-light">
                         {item.cat}
                     </span>
                     <div className="w-1 h-1 bg-[#ff8c00] rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />

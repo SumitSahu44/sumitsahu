@@ -23,7 +23,7 @@ const StickyReveal = () => {
               transition={{ delay: 0.2 }}
               className="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter"
             >
-              Pushing <br /> <span className="text-[#ff8c00] italic">Boundaries</span>
+              Pushing <br /> <span className="text-[#ff8c00]">Boundaries</span>
             </motion.h2 >
             <p className="text-gray-300 mt-6 max-w-md font-light text-lg">
               Crafting digital excellence where every pixel tells a story of innovation.
