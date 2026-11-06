@@ -234,17 +234,17 @@ const SimpleHero = () => {
       />
 
       {/* --- Main Responsive Flex Grid for Overlays --- */}
-      <div className="relative w-full max-w-7xl mx-auto px-6 md:px-12 z-20 flex flex-col md:flex-row items-start md:items-center justify-between h-full pt-28 pb-32 md:py-0 gap-8 md:gap-0">
+      <div className="relative w-full px-6 md:px-12 z-20 flex flex-col md:flex-row items-start md:items-center justify-between h-full pt-20 pb-32 md:pt-20 md:pb-0 gap-8 md:gap-0">
         
         {/* --- Left Side: Title --- */}
         <motion.div
-          className="w-full md:w-[50%] select-none pointer-events-auto flex flex-col text-left"
+          className="w-full md:w-[60%] select-none pointer-events-auto flex flex-col text-left"
           style={{ x: textX, y: textY }}
         >
           <span className="hero-tagline text-white/80 font-mono text-sm md:text-base tracking-[0.2em] mb-4 block uppercase font-medium opacity-0">
             Hey, I'm a
           </span>
-          <h1 className="text-6xl sm:text-8xl md:text-[7.5rem] lg:text-[9.5rem] font-black text-white leading-[0.82] tracking-tighter uppercase flex flex-col">
+          <h1 className="text-5xl sm:text-7xl md:text-[6.5rem] lg:text-[8.2rem] xl:text-[8.8rem] font-black text-white leading-[0.85] tracking-tighter uppercase flex flex-col">
             <span className="overflow-hidden block py-1">
               <span className="hero-title-line inline-block">Design</span>
             </span>
@@ -256,7 +256,7 @@ const SimpleHero = () => {
 
         {/* --- Right Side: Description --- */}
         <motion.div
-          className="hero-desc w-full md:w-[32%] md:max-w-xs select-none pointer-events-auto flex flex-col text-left opacity-0 mt-auto md:mt-0"
+          className="hero-desc w-full md:w-[35%] md:max-w-xs select-none pointer-events-auto flex flex-col text-left opacity-0 mt-auto md:mt-0"
           style={{ x: rightTextX, y: rightTextY }}
         >
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white leading-tight mb-4 tracking-tight">
@@ -274,9 +274,9 @@ const SimpleHero = () => {
         initial={{ opacity: 0, y: 25 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.1, duration: 0.8, ease: "easeOut" }}
-        className="absolute bottom-8 left-6 right-6 md:left-12 md:right-12 z-20 flex flex-wrap justify-between items-end gap-6 md:gap-4 pointer-events-auto"
+        className="absolute bottom-8 left-0 right-0 z-20 pointer-events-auto"
       >
-        <div className="w-full max-w-7xl mx-auto flex flex-wrap justify-between gap-6 md:gap-4">
+        <div className="w-full px-6 md:px-12 flex flex-wrap justify-between items-end gap-6 md:gap-4">
           {[
             { num: "#01", title: "Product Design" },
             { num: "#02", title: "Packaging Design" },

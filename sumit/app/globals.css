@@ -31,32 +31,40 @@ body {
   width: 8px;
   height: 8px;
 }
+
 ::-webkit-scrollbar-track {
   background: #050505;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #1a1a1a;
   border-radius: 4px;
   border: 2px solid #050505;
   transition: background 0.3s;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: #ff8c00;
 }
 
 /* Lenis Smooth Scroll Support */
-html.lenis, html.lenis body {
+html.lenis,
+html.lenis body {
   height: auto;
 }
+
 .lenis.lenis-smooth {
   scroll-behavior: auto !important;
 }
+
 .lenis.lenis-smooth [data-lenis-prevent] {
   overflow: clip;
 }
+
 .lenis.lenis-stopped {
   overflow: hidden;
 }
+
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
 }
@@ -66,6 +74,7 @@ html.lenis, html.lenis body {
   -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
   color: transparent;
 }
+
 .stroke-white {
   -webkit-text-stroke: 1px rgba(255, 255, 255, 0.7);
   color: transparent;
@@ -79,27 +88,48 @@ html.lenis, html.lenis body {
 
 /* Floating Animation */
 @keyframes hero-float {
-  0% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-8px) rotate(1.2deg); }
-  100% { transform: translateY(0px) rotate(0deg); }
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-8px) rotate(1.2deg);
+  }
+
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
 }
+
 .floating-badge {
   animation: hero-float 6s ease-in-out infinite;
 }
 
 /* Marquee Animations */
 @keyframes marquee {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
+
 .animate-marquee {
   animation: marquee 30s linear infinite;
 }
 
 @keyframes marquee-reverse {
-  0% { transform: translateX(-50%); }
-  100% { transform: translateX(0%); }
+  0% {
+    transform: translateX(-50%);
+  }
+
+  100% {
+    transform: translateX(0%);
+  }
 }
+
 .animate-marquee-reverse {
   animation: marquee-reverse 30s linear infinite;
 }
@@ -108,6 +138,7 @@ html.lenis, html.lenis body {
 .video-reveal-pill {
   top: calc(50% + 5.2vw);
 }
+
 @media (min-width: 1024px) {
   .video-reveal-pill {
     top: calc(50% + 58px) !important;
@@ -151,13 +182,11 @@ html.lenis, html.lenis body {
 .scroll-seq-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.25) 0%,
-    transparent 30%,
-    transparent 60%,
-    rgba(0, 0, 0, 0.55) 100%
-  );
+  background: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0.25) 0%,
+      transparent 30%,
+      transparent 60%,
+      rgba(0, 0, 0, 0.55) 100%);
   z-index: 20;
   pointer-events: none;
 }
@@ -165,11 +194,9 @@ html.lenis, html.lenis body {
 .scroll-seq-vignette {
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    ellipse at center,
-    transparent 40%,
-    rgba(0, 0, 0, 0.7) 100%
-  );
+  background: radial-gradient(ellipse at center,
+      transparent 40%,
+      rgba(0, 0, 0, 0.7) 100%);
   z-index: 21;
   pointer-events: none;
 }
@@ -300,13 +327,27 @@ html.lenis, html.lenis body {
 }
 
 @keyframes seq-hint-bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(6px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(6px);
+  }
 }
 
 @keyframes seq-hint-pulse {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
+
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 1;
+  }
 }
 
 /* ---- Right side Ticker ---- */
@@ -389,18 +430,21 @@ html.lenis, html.lenis body {
   border-top: 1.5px solid rgba(255, 140, 0, 0.5);
   border-left: 1.5px solid rgba(255, 140, 0, 0.5);
 }
+
 .scroll-seq-bracket.tr {
   top: 1.5rem;
   right: 1.5rem;
   border-top: 1.5px solid rgba(255, 140, 0, 0.5);
   border-right: 1.5px solid rgba(255, 140, 0, 0.5);
 }
+
 .scroll-seq-bracket.bl {
   bottom: 1.5rem;
   left: 1.5rem;
   border-bottom: 1.5px solid rgba(255, 140, 0, 0.5);
   border-left: 1.5px solid rgba(255, 140, 0, 0.5);
 }
+
 .scroll-seq-bracket.br {
   bottom: 1.5rem;
   right: 1.5rem;
@@ -410,9 +454,25 @@ html.lenis, html.lenis body {
 
 /* ---- Responsive ---- */
 @media (max-width: 640px) {
-  .scroll-seq-counter-num { font-size: 2.2rem; }
-  .scroll-seq-label { font-size: clamp(2rem, 15vw, 4rem); }
-  .scroll-seq-ticker { display: none; }
-  .scroll-seq-title-wrap { bottom: 4rem; left: 1.2rem; }
-  .scroll-seq-counter { top: 1.2rem; left: 1.2rem; }
+  .scroll-seq-counter-num {
+    font-size: 2.2rem;
+  }
+
+  .scroll-seq-label {
+    font-size: clamp(2rem, 15vw, 4rem);
+  }
+
+  .scroll-seq-ticker {
+    display: none;
+  }
+
+  .scroll-seq-title-wrap {
+    bottom: 4rem;
+    left: 1.2rem;
+  }
+
+  .scroll-seq-counter {
+    top: 1.2rem;
+    left: 1.2rem;
+  }
 }

@@ -36,7 +36,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${signatureFont.variable} antialiased`}
       >
         <LayoutWrapper>
-        {children}
+          {children}
         </LayoutWrapper>
       </body>
     </html>

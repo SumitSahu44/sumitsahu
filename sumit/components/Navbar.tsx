@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
@@ -9,8 +9,33 @@ interface NavbarProps {
 }
 
 export default function Navbar({ onMenuToggle, isMenuOpen }: NavbarProps) {
+  const [hidden, setHidden] = useState(false);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+      // 10px threshold taaki chote scroll pe toggle na ho
+      if (currentY > lastScrollY.current + 10) {
+        setHidden(true);   // scroll down → hide
+      } else if (currentY < lastScrollY.current - 10) {
+        setHidden(false);  // scroll up → show
+      }
+      lastScrollY.current = currentY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <header className="nav-container fixed top-0 left-0 w-full z-[100] px-6 py-6 md:px-12 md:py-8 flex justify-between items-center pointer-events-none">
+    <header
+      className="nav-container fixed top-0 left-0 w-full z-[100] px-6 py-6 md:px-12 md:py-8 flex justify-between items-center pointer-events-none"
+      style={{
+        transform: hidden ? "translateY(-100%)" : "translateY(0)",
+        transition: "transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+      }}
+    >
       
       {/* Minimal SVG Logo matching the mockup */}
       <div className="pointer-events-auto flex items-center">

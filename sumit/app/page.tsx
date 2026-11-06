@@ -3,22 +3,24 @@ import OverviewSection from "@/components/OverviewSection";
 import WorkShowcase from "@/components/WorkShowcase";
 import VideoRevealSection from "@/components/VideoRevealSection";
 import KineticText from "@/components/KineticText";
-import MagneticGrid from "@/components/MagneticGrid"; 
-import StickyReveal from "@/components/StickyReveal";
+import GsapHorizontalScroll from "@/components/GsapHorizontalScroll";
+import MagneticGrid from "@/components/MagneticGrid";
 import FixedBgSection from "@/components/FixedBgSection";
+import ProjectsSection from "@/components/ProjectsSection";
 import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
     <main>
       <Hero />
-      <OverviewSection />
-      <WorkShowcase />  
+      {/* <OverviewSection /> */}
+      {/* <WorkShowcase /> */}
       <VideoRevealSection />
-      <StickyReveal />
-      <MagneticGrid />
-      <FixedBgSection />  
+      {/* <MagneticGrid /> */}
+      <FixedBgSection />
+      <GsapHorizontalScroll />
       <KineticText />
+      <ProjectsSection />
       <Footer />
     </main>
   );

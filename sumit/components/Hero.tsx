@@ -297,43 +297,13 @@ const SumitHero = () => {
         ))}
       </div>
 
-      {/* --- 3D-Tilting Glassmorphic Stats Card --- */}
+      {/* --- Content: Left Title + Right Stats Card (Below Navbar, Aligned with Logo) --- */}
       <motion.div
-        className="absolute bottom-24 right-10 md:right-24 z-20 pointer-events-auto hidden sm:block select-none"
-        style={{
-          x: badgeX,
-          y: badgeY,
-          rotateX: cardRotateX,
-          rotateY: cardRotateY,
-          transformStyle: "preserve-3d",
-          perspective: 1000
-        }}
-      >
-        <div className="p-6 bg-black/30 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)] max-w-[280px] hover:border-[#ff8c00]/40 hover:shadow-[0_0_30px_rgba(255,140,0,0.12)] transition-all duration-500">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="w-2 h-2 bg-[#ff8c00] rounded-full animate-ping" />
-            <span className="text-[9px] text-white/50 tracking-[0.2em] font-mono uppercase">Developer Status</span>
-          </div>
-          <h4 className="text-base font-black text-white tracking-tight mb-0.5">SUMIT SAHU</h4>
-          <p className="text-[10px] text-gray-400 font-mono mb-4 uppercase tracking-wider">MERN Stack Architect</p>
-          <div className="h-[1px] bg-white/10 my-3.5" />
-          <div className="flex justify-between items-center text-[10px] font-mono">
-            <span className="text-white/60 uppercase">Completed</span>
-            <span className="text-[#ff8c00] font-bold">50+ Projects</span>
-          </div>
-          <div className="flex justify-between items-center text-[10px] font-mono mt-1.5">
-            <span className="text-white/60 uppercase">Experience</span>
-            <span className="text-[#ff8c00] font-bold">3+ Years</span>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* --- Content: Left Aligned for Portfolio --- */}
-      <motion.div
-        className="absolute inset-0 z-20 flex items-center px-6 md:px-24 pointer-events-none"
+        className="absolute inset-0 z-20 flex items-start justify-between px-6 md:px-12 pt-24 md:pt-28 pointer-events-none"
         style={{ x: textX, y: textY }}
       >
-        <div className="max-w-4xl select-none pointer-events-auto">
+        {/* LEFT: Main Title — aligned with navbar logo */}
+        <div className="max-w-2xl select-none pointer-events-auto">
           <span className="hero-tagline text-[#ff8c00] font-mono text-xs md:text-sm mb-4 block tracking-[0.35em] opacity-0 uppercase font-semibold">
             MERN STACK DEVELOPER & TEAM LEAD
           </span>
@@ -349,6 +319,37 @@ const SumitHero = () => {
             Crafting high-end digital experiences with code, performance optimization, and aesthetic precision.
           </p>
         </div>
+
+        {/* RIGHT: 3D-Tilting Glassmorphic Stats Card — vertically centered */}
+        <motion.div
+          className="hidden sm:block select-none pointer-events-auto flex-shrink-0"
+          style={{
+            x: badgeX,
+            y: badgeY,
+            rotateX: cardRotateX,
+            rotateY: cardRotateY,
+            transformStyle: "preserve-3d",
+            perspective: 1000
+          }}
+        >
+          <div className="p-6 bg-black/30 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)] w-[260px] hover:border-[#ff8c00]/40 hover:shadow-[0_0_30px_rgba(255,140,0,0.12)] transition-all duration-500">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="w-2 h-2 bg-[#ff8c00] rounded-full animate-ping" />
+              <span className="text-[9px] text-white/50 tracking-[0.2em] font-mono uppercase">Developer Status</span>
+            </div>
+            <h4 className="text-base font-black text-white tracking-tight mb-0.5">SUMIT SAHU</h4>
+            <p className="text-[10px] text-gray-400 font-mono mb-4 uppercase tracking-wider">MERN Stack Architect</p>
+            <div className="h-[1px] bg-white/10 my-3.5" />
+            <div className="flex justify-between items-center text-[10px] font-mono">
+              <span className="text-white/60 uppercase">Completed</span>
+              <span className="text-[#ff8c00] font-bold">50+ Projects</span>
+            </div>
+            <div className="flex justify-between items-center text-[10px] font-mono mt-1.5">
+              <span className="text-white/60 uppercase">Experience</span>
+              <span className="text-[#ff8c00] font-bold">3+ Years</span>
+            </div>
+          </div>
+        </motion.div>
       </motion.div>
 
       {/* --- Unique Cursor: "The Fluid Ring" --- */}
