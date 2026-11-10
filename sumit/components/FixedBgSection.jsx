@@ -39,9 +39,6 @@ const FixedBgSection = () => {
           style={{ y: textY, opacity }}
           className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6 pt-28 pb-16"
         >
-          <span className="text-[#ff8c00] font-mono tracking-[0.5em] mb-4 uppercase text-sm">
-            About My Vision
-          </span>
           <h2 className="text-6xl md:text-[10rem] font-black text-white uppercase leading-none tracking-tighter">
             Digital <br /> <span className="text-transparent stroke-white stroke-[1px]">Architect</span>
           </h2>
@@ -52,24 +49,6 @@ const FixedBgSection = () => {
         </motion.div>
       </section>
 
-      {/* 3. NEXT COMPONENT (JO UPAR AAYEGA) */}
-      <section className="relative z-20 bg-[#050505] w-full py-20 px-10 border-t border-white/10">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
-          {/* Content of the next section */}
-          <div className="space-y-6">
-            <h3 className="text-[#ff8c00] text-4xl font-bold">Leadership.</h3>
-            <p className="text-gray-400">Managing a 3-member team to deliver pixel-perfect solutions for global brands like Parekh Group.</p>
-          </div>
-          <div className="space-y-6">
-            <h3 className="text-[#ff8c00] text-4xl font-bold">Precision.</h3>
-            <p className="text-gray-400">Optimizing WordPress and React apps for lightning-fast load times and SEO dominance.</p>
-          </div>
-          <div className="space-y-6">
-            <h3 className="text-[#ff8c00] text-4xl font-bold">Innovation.</h3>
-            <p className="text-gray-400">Integrating GSAP, Three.js, and Framer Motion to create websites that don't just work—they perform.</p>
-          </div>
-        </div>
-      </section>
     </div>
   );
 };

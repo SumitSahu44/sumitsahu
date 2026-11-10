@@ -37,20 +37,13 @@ export default function Navbar({ onMenuToggle, isMenuOpen }: NavbarProps) {
       }}
     >
       
-      {/* Minimal SVG Logo matching the mockup */}
       <div className="pointer-events-auto flex items-center">
-        <Link href="/" className="flex items-center gap-2 text-white hover:opacity-85 transition-opacity" aria-label="Home">
-          <svg className="w-9 h-9 text-white" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* Outline circular ring with gap at top */}
-            <path 
-              d="M 33 28 A 40 40 0 1 0 67 28" 
-              stroke="currentColor" 
-              strokeWidth="9" 
-              strokeLinecap="round" 
-            />
-            {/* Solid center dot */}
-            <circle cx="50" cy="50" r="10" fill="currentColor" />
-          </svg>
+        <Link
+          href="/"
+          className="signature-wordmark inline-block text-[2.75rem] leading-none text-white transition-colors hover:text-[#ff8c00] md:text-5xl"
+          aria-label="Sumit — Home"
+        >
+          Sumit
         </Link>
       </div>
 
@@ -85,6 +78,7 @@ export default function Navbar({ onMenuToggle, isMenuOpen }: NavbarProps) {
         <button
           onClick={onMenuToggle}
           aria-label="Toggle Menu"
+          aria-expanded={isMenuOpen}
           className="md:hidden w-12 h-12 flex flex-col justify-center items-center gap-1.5 bg-white/5 border border-white/10 rounded-full cursor-pointer hover:bg-white/15 hover:border-white/20 transition-all duration-300 focus:outline-none"
         >
           <div

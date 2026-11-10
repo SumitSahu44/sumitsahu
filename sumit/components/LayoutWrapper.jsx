@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence, useSpring, useMotionValue } from "framer-motion";
+import { motion, useSpring, useMotionValue } from "framer-motion";
 import gsap from "gsap";
 import Lenis from "@studio-freight/lenis";
 import Navbar from "@/components/Navbar";
@@ -8,12 +8,12 @@ import Link from "next/link";
 
 const LayoutWrapper = ({ children }) => {
   const [loading, setLoading] = useState(true);
-  const [progress, setProgress] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [timeString, setTimeString] = useState("");
 
   const preloaderRef = useRef(null);
+  const mainRef = useRef(null);
   const menuCurtainRef = useRef(null);
 
   // Menu items with high-end project images
@@ -22,8 +22,8 @@ const LayoutWrapper = ({ children }) => {
     { name: "Work", href: "/#work", previewImg: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=800" },
     { name: "Services", href: "/#capabilities", previewImg: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800" },
     { name: "About", href: "/about", previewImg: "/images/Hero-front.png" },
-    { name: "Experience", href: "/#experience", previewImg: "https://images.unsplash.com/photo-1512314889357-e157c22f938d?q=80&w=800" },
-    { name: "Contact", href: "/contact", previewImg: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800" },
+    { name: "Tech Stack", href: "/#tech-stack", previewImg: "https://images.unsplash.com/photo-1512314889357-e157c22f938d?q=80&w=800" },
+    { name: "Contact", href: "/#contact", previewImg: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800" },
   ];
 
   // Motion values for magnetic menu hover image preview
@@ -56,22 +56,6 @@ const LayoutWrapper = ({ children }) => {
     return () => clearInterval(interval);
   }, []);
 
-  // 2. Slow-down Organic Progress Loader
-  useEffect(() => {
-    let currentProgress = 0;
-    const interval = setInterval(() => {
-      const increment = currentProgress > 75 ? Math.random() * 1.5 : Math.random() * 4 + 1.2;
-      currentProgress = Math.min(100, currentProgress + increment);
-      setProgress(Math.floor(currentProgress));
-      if (currentProgress >= 100) {
-        clearInterval(interval);
-      }
-    }, 30);
-    return () => clearInterval(interval);
-  }, []);
-
-
-
   // 4. Global Lenis scroll manager
   useEffect(() => {
     if (loading) return;
@@ -81,13 +65,14 @@ const LayoutWrapper = ({ children }) => {
       wheelMultiplier: 1,
       touchMultiplier: 1.5,
     });
+    let frameId;
     function raf(time) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      frameId = requestAnimationFrame(raf);
     }
-    requestAnimationFrame(raf);
+    frameId = requestAnimationFrame(raf);
     window.lenis = lenis;
-    return () => lenis.destroy();
+    return () => { cancelAnimationFrame(frameId); lenis.destroy(); if (window.lenis === lenis) delete window.lenis; };
   }, [loading]);
 
   // 5. Stop Lenis scrolling when menu is active
@@ -102,70 +87,55 @@ const LayoutWrapper = ({ children }) => {
     }
   }, [menuOpen]);
 
-  // 6. GSAP Preloader Curve Reveal Timeline
   useEffect(() => {
-    if (progress === 100) {
-      const tl = gsap.timeline({
-        onComplete: () => setLoading(false),
-      });
+    const overlay = preloaderRef.current;
+    const heroCopy = mainRef.current.querySelectorAll(".hero-desc");
+    const heroTitles = mainRef.current.querySelectorAll(".hero-title-line");
 
-      // 1. Fade out the center content
-      tl.to(".preloader-content", {
-        opacity: 0,
-        y: -50,
-        duration: 0.8,
-        ease: "power4.inOut"
-      })
-      // 2. Animate the liquid curtain path to pull up
-      .to("#preloader-path", {
-        attr: { d: "M 0 0 L 100 0 L 100 0 Q 50 50 0 0 Z" },
-        duration: 0.8,
-        ease: "power3.in"
-      }, "-=0.2")
-      .to("#preloader-path", {
-        attr: { d: "M 0 0 L 100 0 L 100 0 Q 50 0 0 0 Z" },
-        duration: 0.4,
-        ease: "power2.out"
-      })
-      // 3. Reveal page components
-      .fromTo(".nav-container", {
-        y: -50,
-        opacity: 0,
-      }, {
-        y: 0,
-        opacity: 1,
-        duration: 0.8,
-        ease: "power3.out",
-        clearProps: "all"
-      }, "-=0.6")
-      .fromTo(".hero-tagline", {
-        y: 30,
-        opacity: 0,
-      }, {
-        y: 0,
-        opacity: 1,
-        duration: 0.8,
-        ease: "power3.out",
-      }, "-=0.6")
-      .fromTo(".hero-title-line", {
-        yPercent: 100,
-      }, {
-        yPercent: 0,
-        duration: 1.0,
-        ease: "power4.out",
-        stagger: 0.15,
-      }, "-=0.7")
-      .fromTo(".hero-desc", {
-        y: 30,
-        opacity: 0,
-      }, {
-        y: 0,
-        opacity: 1,
-        duration: 0.8,
-        ease: "power3.out",
-      }, "-=0.6");
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      if (heroCopy.length) gsap.set(heroCopy, { opacity: 1 });
+      setLoading(false);
+      return;
     }
-  }, [progress]);
+
+    const context = gsap.context(() => {
+      const timeline = gsap.timeline({ onComplete: () => setLoading(false) });
+      const counter = overlay.querySelector(".intro-progress");
+      const progress = { value: 0 };
+      const duration = 1.35;
+
+      timeline
+        .to(progress, {
+          value: 100,
+          duration,
+          ease: "none",
+          onUpdate: () => {
+            const label = `${Math.floor(progress.value)}%`;
+            if (counter.textContent !== label) counter.textContent = label;
+          },
+        }, 0)
+        .to(".intro-signature", {
+          clipPath: "inset(0 -2% 0 0)", duration: duration * 0.8, ease: "none",
+        }, 0)
+        .to(".intro-flourish", {
+          strokeDashoffset: 0, duration: duration * 0.28, ease: "power1.out",
+        }, duration * 0.72)
+        .to(overlay, { yPercent: -100, duration: 0.42, ease: "power3.inOut" }, "+=0.18");
+
+      if (heroTitles.length) {
+        timeline.fromTo(heroTitles, { yPercent: 100 }, {
+          yPercent: 0, duration: 0.55, stagger: 0.08, ease: "power3.out",
+        }, "-=0.38");
+      }
+      if (heroCopy.length) {
+        timeline.fromTo(heroCopy, { opacity: 0, y: 16 }, {
+          opacity: 1, y: 0, duration: 0.4, ease: "power2.out",
+        }, "-=0.35");
+      }
+    }, overlay);
+
+    return () => context.revert();
+  }, []);
 
   // 7. GSAP Menu Liquid Curtain Transitions
   useEffect(() => {
@@ -231,49 +201,39 @@ const LayoutWrapper = ({ children }) => {
 
   return (
     <>
-      {/* --- PRELOADER PANEL --- */}
-      <AnimatePresence>
-        {loading && (
-          <div
-            ref={preloaderRef}
-            className="fixed inset-0 z-[999] flex items-center justify-center overflow-hidden select-none pointer-events-auto"
-          >
-            {/* Liquid SVG Curtain background */}
-            <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
-              <svg className="w-full h-full fill-[#050505]" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <path id="preloader-path" d="M 0 0 L 100 0 L 100 100 Q 50 100 0 100 Z" />
-              </svg>
-            </div>
-
-            {/* Premium Center Content */}
-            <div className="preloader-content relative z-10 flex flex-col items-center justify-center text-center p-6 pointer-events-none">
-              {/* Subtle radial glow */}
-              <div className="absolute w-[500px] h-[500px] bg-radial from-[#ff8c00]/5 to-transparent blur-3xl pointer-events-none" />
-
-              {/* Elegant Typography Title with progress-based clipping */}
-              <div className="relative font-sans font-black tracking-[0.25em] text-4xl sm:text-6xl md:text-8xl uppercase select-none">
-                {/* Background outline */}
-                <div className="stroke-text select-none text-white/10">
-                  SUMIT SAHU
-                </div>
-                {/* Foreground fill */}
-                <div 
-                  className="absolute top-0 left-0 text-white overflow-hidden select-none whitespace-nowrap transition-all duration-75 ease-out"
-                  style={{ width: `${progress}%`, borderRight: progress < 100 ? "2px solid #ff8c00" : "none" }}
-                >
-                  SUMIT SAHU
-                </div>
-              </div>
-
-              {/* Minimal status detail & percentage */}
-              <div className="w-64 sm:w-80 mt-8 flex justify-between items-center text-[10px] font-mono tracking-[0.3em] text-white/40">
-                <span className="text-[#ff8c00] font-semibold animate-pulse">SYSTEM RUNNING</span>
-                <span>{progress}%</span>
-              </div>
+      {loading && (
+        <div
+          ref={preloaderRef}
+          aria-hidden="true"
+          className="fixed inset-0 z-[999] grid place-items-center overflow-hidden bg-[#050505] select-none"
+        >
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,#ff8c000e,transparent_55%)]" />
+          <div className="relative flex flex-col items-center text-center">
+            <span
+              className="intro-signature signature-wordmark block px-8 text-[clamp(6rem,19vw,12rem)] leading-[1.05] text-white"
+              style={{ clipPath: "inset(0 100% 0 0)" }}
+            >
+              Sumit
+            </span>
+            <svg viewBox="0 0 180 24" className="-mt-3 h-6 w-32 text-[#ff8c00] sm:w-44" fill="none">
+              <path
+                className="intro-flourish"
+                d="M3 20C45 3 109 0 177 8"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                pathLength="1"
+                strokeDasharray="1"
+                strokeDashoffset="1"
+              />
+            </svg>
+            <div className="mt-6 flex items-center gap-5 font-mono text-[10px] uppercase tracking-[0.22em] text-white/55">
+              <span>Creative Developer</span>
+              <span className="intro-progress w-[5ch] text-right tabular-nums text-[#ff8c00]">0%</span>
             </div>
           </div>
-        )}
-      </AnimatePresence>
+        </div>
+      )}
 
       {/* --- CREATIVE NAVBAR --- */}
       <Navbar onMenuToggle={() => setMenuOpen(!menuOpen)} isMenuOpen={menuOpen} />
@@ -396,7 +356,7 @@ const LayoutWrapper = ({ children }) => {
       </div>
 
       {/* --- MAIN PAGE CONTENT --- */}
-      <main className="opacity-100">
+      <main ref={mainRef} className="opacity-100">
         {children}
       </main>
     </>

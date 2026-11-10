@@ -1,104 +1,70 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import MaskedHeading from "@/components/MaskedHeading";
 
-const KineticText = () => {
-  const containerRef = useRef(null);
-  const textRef = useRef(null);
+export default function KineticText() {
+  const sectionRef = useRef(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
+    const section = sectionRef.current;
+    const text = section.querySelector("[data-masked-text]");
+    const motion = gsap.matchMedia();
 
-    const ctx = gsap.context(() => {
-      const words = gsap.utils.toArray(".kinetic-word");
-
-      const tl = gsap.timeline({
+    motion.add("(prefers-reduced-motion: no-preference)", () => {
+      // Keep the measured text in normal flow so it aligns with the video mask.
+      gsap.fromTo(text.children, { color: "#a39a91" }, {
+        color: "rgba(163, 154, 145, 0)",
+        duration: 0.28,
+        stagger: 0.08,
+        ease: "power1.inOut",
         scrollTrigger: {
-          trigger: containerRef.current,
+          trigger: section,
           start: "top top",
-          end: "+=1500", // Original scroll length
-          scrub: 1,
+          end: () => `+=${section.clientHeight * (section.clientWidth < 640 ? 0.75 : 1)}`,
           pin: true,
-          anticipatePin: 1,
+          scrub: true,
         },
       });
+    });
 
-      // Animation: Scattering to Perfection (Original broad values)
-      tl.fromTo(
-        words,
-        {
-          x: () => (Math.random() - 0.5) * 1000,
-          y: () => (Math.random() - 0.5) * 1000,
-          z: () => Math.random() * -1000,
-          rotationX: () => Math.random() * 360,
-          rotationY: () => Math.random() * 360,
-          opacity: 0,
-        },
-        {
-          x: 0,
-          y: 0,
-          z: 0,
-          rotationX: 0,
-          rotationY: 0,
-          opacity: 1,
-          stagger: 0.05,
-          ease: "power3.out",
-        }
-      );
-    }, containerRef);
-
-    return () => {
-      ctx.revert();
-    };
+    return () => motion.revert();
   }, []);
-
-  const sentence = "Code is not just logic it is an art of possibilities";
-  const wordsArray = sentence.split(" ");
 
   return (
     <section
-      ref={containerRef}
-      className="relative h-screen w-full bg-[#050505] flex items-center justify-center overflow-hidden px-4"
-      style={{ perspective: "1000px" }}
+      ref={sectionRef}
+      aria-labelledby="digital-philosophy-heading"
+      className="relative isolate grid min-h-[100svh] w-full place-items-center overflow-hidden border-y border-white/[0.07] bg-[#050505] px-4 py-16 sm:px-6 md:px-12 md:py-32"
     >
-      {/* Background Subtle Text */}
-      <div className="absolute top-10 left-10 opacity-10 select-none">
-        <span className="text-white font-mono text-xs md:text-sm tracking-[1em] uppercase">
-          Digital Philosophy / {new Date().getFullYear()}
-        </span>
+      <div className="w-full max-w-6xl">
+        <MaskedHeading
+          id="digital-philosophy-heading"
+          text="CODE IS NOT JUST LOGIC. IT IS AN ART OF POSSIBILITIES."
+          mediaType="video"
+          src="https://videos.pexels.com/video-files/853889/853889-hd_1920_1080_25fps.mp4"
+          poster="/images/Hero-back.jpg"
+          reveal="none"
+          textScale={0.084}
+          mobileTextScale={0.105}
+          lineHeight={1}
+          weight={900}
+          tracking={-0.045}
+          parallax={0}
+          drift={0}
+          saturation={1.2}
+          brightness={1.25}
+          className="isolate text-[#ffe6cc] [&>[data-masked-media]]:-z-10"
+        />
       </div>
 
-      {/* Main Kinetic Text Container */}
-      <h2
-        ref={textRef}
-        className="flex flex-wrap justify-center items-center text-center max-w-5xl gap-x-4 md:gap-x-8 gap-y-2"
-      >
-        {wordsArray.map((word, index) => (
-          <span
-            key={index}
-            className="kinetic-word inline-block text-5xl md:text-8xl font-black uppercase text-white tracking-tighter"
-          >
-            {word === "art" ? (
-              <span className="text-[#ff8c00]">
-                {word}
-              </span>
-            ) : (
-              word
-            )}
-          </span>
-        ))}
-      </h2>
-
-      {/* Decorative Elements */}
-      <div className="absolute bottom-10 right-10 flex gap-4 items-center">
-        <div className="w-20 h-[1px] bg-white/20" />
-        <span className="text-[10px] text-[#ff8c00] font-mono uppercase tracking-widest">
-          Sumit Sahu Edition
-        </span>
+      <div aria-hidden="true" className="absolute right-4 bottom-[max(1.25rem,env(safe-area-inset-bottom))] flex items-center gap-3 md:right-12 md:bottom-12 md:gap-4">
+        <span className="h-px w-12 bg-white/20 md:w-20" />
+        <span className="font-mono text-[10px] tracking-widest text-[#ff8c00] uppercase">Sumit Sahu Edition</span>
       </div>
     </section>
   );
-};
-
-export default KineticText;
+}

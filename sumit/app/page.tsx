@@ -8,6 +8,7 @@ import MagneticGrid from "@/components/MagneticGrid";
 import FixedBgSection from "@/components/FixedBgSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import Footer from "@/components/Footer";
+import { ServicesSection, ContactSection } from "@/components/PortfolioDetails";
 
 export default function Home() {
   return (
@@ -18,10 +19,14 @@ export default function Home() {
       <VideoRevealSection />
       {/* <MagneticGrid /> */}
       <FixedBgSection />
+      <ServicesSection />
       <GsapHorizontalScroll />
       <KineticText />
-      <ProjectsSection />
-      <Footer />
+      <div className="portfolio-gallery bg-[#080808]">
+        <ProjectsSection />
+        <ContactSection />
+        <Footer />
+      </div>
     </main>
   );
 }

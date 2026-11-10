@@ -1,27 +1,35 @@
 "use client";
 import React, { useEffect, useRef } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+
+const projectPreviews = [
+  { name: "Deshi Tokri", src: "/images/projects/deshi-tokri.webp" },
+  { name: "Noorzaar", src: "/images/projects/noorzaar.webp" },
+];
 
 const GsapHorizontalScroll = () => {
   const sectionRef = useRef(null);
   const trackRef = useRef(null);
+  const rowRef = useRef(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    const ctx = gsap.context(() => {
-      const track = trackRef.current;
+    const motion = gsap.matchMedia(sectionRef);
+
+    motion.add({ desktop: "(min-width: 768px)", all: "all" }, ({ conditions }) => {
+      const track = conditions.desktop ? trackRef.current : rowRef.current;
       const section = sectionRef.current;
       if (!track || !section) return;
 
       // Get the total scrollable width
       const getScrollAmount = () => {
-        return -(track.scrollWidth - window.innerWidth);
+        return -Math.max(0, track.scrollWidth - section.clientWidth);
       };
 
       // Horizontal scroll animation
-      const progressBar = section.querySelector(".hscroll-progress-bar");
       const scrollHint = section.querySelector(".hscroll-scroll-hint");
 
       const horizontalTween = gsap.to(track, {
@@ -30,27 +38,20 @@ const GsapHorizontalScroll = () => {
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: () => `+=${track.scrollWidth}`,
+          end: () => `+=${-getScrollAmount()}`,
           pin: true,
           scrub: 1,
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
-            // Animate progress bar width
-            if (progressBar) {
-              gsap.set(progressBar, { width: `${self.progress * 100}%` });
-            }
-            // Fade out scroll hint once user starts scrolling
-            if (scrollHint && self.progress > 0.02) {
-              gsap.to(scrollHint, { opacity: 0, y: -10, duration: 0.4, ease: "power2.out" });
-            }
+            scrollHint?.classList.toggle("opacity-0", self.progress > 0.02);
           },
         },
       });
 
       // Animate each word group as it enters viewport
-      const wordGroups = gsap.utils.toArray(".hscroll-word-group");
-      wordGroups.forEach((group, i) => {
+      const wordGroups = track.querySelectorAll(".hscroll-word-group");
+      wordGroups.forEach((group) => {
         const words = group.querySelectorAll(".hscroll-word");
         const decorElements = group.querySelectorAll(".hscroll-decor");
 
@@ -104,9 +105,9 @@ const GsapHorizontalScroll = () => {
           }
         );
       });
-    }, sectionRef);
+    });
 
-    return () => ctx.revert();
+    return () => motion.revert();
   }, []);
 
   // Word groups data — Sumit's web dev identity
@@ -123,8 +124,8 @@ const GsapHorizontalScroll = () => {
     {
       id: "group-2",
       words: [
-        { text: "Full", color: "orange", size: "large", rotate: 2 },
-        { text: "Stack", color: "purple", size: "large", rotate: -4 },
+        { text: "TypeScript", color: "orange", size: "large", rotate: 2 },
+        { text: "Tailwind CSS", color: "purple", size: "large", rotate: -4 },
       ],
       decor: ["semicircle", "star"],
     },
@@ -133,32 +134,32 @@ const GsapHorizontalScroll = () => {
       words: [
         { text: "GSAP", color: "green-gradient", size: "large" },
         { text: "&", color: "transparent", size: "regular" },
-        { text: "Motion", color: "orange-gradient", size: "large", rotate: 5 },
+        { text: "Framer Motion", color: "orange-gradient", size: "large", rotate: 5 },
       ],
       decor: ["hourglass", "circle"],
     },
     {
       id: "group-4",
       words: [
-        { text: "E-Com", color: "pink", size: "large", rotate: -2 },
-        { text: "SaaS", color: "green", size: "large", rotate: 3 },
+        { text: "Node.js", color: "pink", size: "large", rotate: -2 },
+        { text: "Express", color: "green", size: "large", rotate: 3 },
       ],
       decor: ["bolt", "worm"],
     },
     {
       id: "group-5",
       words: [
-        { text: "Node", color: "purple-gradient", size: "large" },
+        { text: "MongoDB", color: "purple-gradient", size: "large" },
         { text: "+", color: "transparent", size: "regular" },
-        { text: "MongoDB", color: "orange", size: "large", rotate: -6 },
+        { text: "REST APIs", color: "orange", size: "large", rotate: -6 },
       ],
       decor: ["flower", "diamond"],
     },
     {
       id: "group-6",
       words: [
-        { text: "Pixel", color: "green", size: "large", rotate: 4 },
-        { text: "Perfect", color: "pink", size: "large", rotate: -3 },
+        { text: "Git", color: "green", size: "large", rotate: 4 },
+        { text: "GitHub", color: "pink", size: "large", rotate: -3 },
       ],
       decor: ["star", "semicircle"],
     },
@@ -342,6 +343,7 @@ const GsapHorizontalScroll = () => {
 
   return (
     <section
+      id="tech-stack"
       ref={sectionRef}
       className="gsap-hscroll-section"
       style={{
@@ -363,100 +365,22 @@ const GsapHorizontalScroll = () => {
         }}
       />
 
-      {/* Section Label */}
-      <div
-        style={{
-          position: "absolute",
-          top: "clamp(20px, 4vh, 40px)",
-          left: "clamp(20px, 4vw, 60px)",
-          zIndex: 10,
-          display: "flex",
-          alignItems: "center",
-          gap: "12px",
-        }}
-      >
-        <div
-          style={{
-            width: "8px",
-            height: "8px",
-            borderRadius: "50%",
-            backgroundColor: "#0ae448",
-            boxShadow: "0 0 12px #0ae448",
-          }}
-        />
-        <span
-          style={{
-            fontFamily: "'Inter', 'SF Pro', system-ui, sans-serif",
-            fontSize: "11px",
-            fontWeight: 600,
-            color: "rgba(255, 252, 225, 0.5)",
-            letterSpacing: "0.2em",
-            textTransform: "uppercase",
-          }}
-        >
-          What I Do
-        </span>
-      </div>
-
-      {/* The horizontal scrolling track */}
       <div
         ref={trackRef}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          height: "100vh",
-          width: "fit-content",
-          paddingLeft: "15vw",
-          paddingRight: "15vw",
-          gap: "0",
-        }}
+        className="relative flex h-[100svh] w-full flex-col gap-5 pt-[clamp(4.5rem,13svh,7rem)] md:w-max md:flex-row md:items-center md:gap-0 md:px-12 md:pt-0"
       >
-        {/* Intro panel */}
-        <div
-          className="hscroll-word-group"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            minWidth: "40vw",
-            paddingRight: "8vw",
-            position: "relative",
-          }}
-        >
-          <span
-            className="hscroll-word"
-            style={{
-              fontFamily: "'Inter', 'SF Pro', system-ui, sans-serif",
-              fontSize: "clamp(13px, 1.3vw, 18px)",
-              fontWeight: 400,
-              color: "rgba(255, 252, 225, 0.55)",
-              letterSpacing: "-0.01em",
-              lineHeight: 1.55,
-              maxWidth: "380px",
-              marginBottom: "30px",
-            }}
-          >
-            I build creative websites for different sectors — from SaaS and e-commerce to agencies and portfolios. Every project, a unique digital experience.
-          </span>
-          <h2
-            className="hscroll-word"
-            style={{
-              fontFamily: "'Inter', 'SF Pro', system-ui, sans-serif",
-              fontSize: "clamp(40px, 5vw, 72px)",
-              fontWeight: 700,
-              color: "#fffce1",
-              letterSpacing: "-0.03em",
-              lineHeight: 0.95,
-            }}
-          >
-            My
-            <br />
-            <span style={{ color: "#ff8709" }}>Tech</span>
-            <br />
-            Stack
+        <div className="relative z-10 shrink-0 px-4 md:w-[38vw] md:pr-10 md:pl-0">
+          <h2 className="text-[clamp(2rem,9vw,3.5rem)] leading-[0.95] font-black tracking-tight text-[#fffce1] md:text-[clamp(2.75rem,5.4vw,5.75rem)]">
+            My tech <br className="hidden md:block" />
+            <span className="text-[#ff8709]">stack.</span>
           </h2>
+          <p className="mt-3 max-w-sm text-sm leading-relaxed text-white/70 md:mt-6 lg:text-base">
+            I build responsive websites and full-stack apps with React and Next.js.
+            Node.js and MongoDB power the backend, and GSAP brings the interface to life.
+          </p>
         </div>
 
+        <div ref={rowRef} className="flex w-max min-h-0 flex-1 items-center px-4 pb-10 max-md:max-h-[min(52svh,28rem)] md:flex-none md:px-0 md:pb-0">
         {/* Word groups */}
         {wordGroups.map((group) => (
           <div
@@ -519,12 +443,12 @@ const GsapHorizontalScroll = () => {
                         ? "clamp(12px, 1.5vh, 18px) clamp(16px, 2vw, 24px)"
                         : "clamp(8px, 1vh, 14px) clamp(10px, 1.5vw, 18px)",
                       background: colors.bg,
-                      color: isTransparent ? colors.text : colors.text,
+                      color: colors.text,
                       borderRadius: isTransparent ? "0" : "10px",
                       fontFamily: "'Inter', 'SF Pro', system-ui, sans-serif",
                       fontSize: isLarge
-                        ? "clamp(48px, 6.5vw, 110px)"
-                        : "clamp(32px, 4vw, 64px)",
+                        ? "clamp(30px, 5.2vw, 90px)"
+                        : "clamp(20px, 3.5vw, 54px)",
                       fontWeight: 600,
                       lineHeight: 1,
                       letterSpacing: "-0.02em",
@@ -541,62 +465,42 @@ const GsapHorizontalScroll = () => {
           </div>
         ))}
 
-        {/* Ending panel */}
-        <div
-          className="hscroll-word-group"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            minWidth: "50vw",
-            paddingLeft: "8vw",
-            position: "relative",
-          }}
-        >
-          <div
-            className="hscroll-word"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: "20px",
-            }}
-          >
-            <span
-              style={{
-                fontFamily: "'Inter', 'SF Pro', system-ui, sans-serif",
-                fontSize: "clamp(14px, 1.2vw, 18px)",
-                fontWeight: 500,
-                color: "rgba(255, 252, 225, 0.4)",
-                letterSpacing: "0.15em",
-                textTransform: "uppercase",
-              }}
-            >
-              Got a project in mind?
-            </span>
-            <div
-              style={{
-                width: "clamp(50px, 8vw, 100px)",
-                height: "1px",
-                background: "linear-gradient(90deg, transparent, #ff8709, transparent)",
-              }}
-            />
+        <div className="relative z-10 my-auto ml-6 grid w-[calc(100vw-3rem)] shrink-0 items-center gap-3 overflow-hidden rounded-2xl bg-[#ff8709] p-4 text-[#17100b] sm:p-6 md:my-0 md:ml-12 md:w-[calc(100vw-6rem)] md:grid-cols-[1.25fr_1fr] md:gap-6 md:p-10 lg:p-14">
+          <div className="relative z-10 min-w-0">
+            <h3 className="text-[clamp(2rem,6.5vw,7rem)] leading-[0.94] font-black tracking-tighter">
+              See what<br />I build.
+            </h3>
+            <p className="mt-2 max-w-xs text-sm leading-relaxed md:mt-4">
+              Explore the storefronts and business websites in my portfolio.
+            </p>
             <a
-              href="mailto:sumitsahu5328@gmail.com"
-              style={{
-                fontFamily: "'Inter', 'SF Pro', system-ui, sans-serif",
-                fontSize: "clamp(10px, 1vw, 13px)",
-                fontWeight: 600,
-                color: "#ff8709",
-                letterSpacing: "0.25em",
-                textTransform: "uppercase",
-                textDecoration: "none",
-              }}
+              href="#work"
+              className="group mt-3 inline-flex items-center gap-3 rounded-full bg-[#17100b] px-4 py-3 text-xs font-semibold text-white transition-colors hover:bg-white hover:text-[#17100b] focus-visible:outline-[#17100b] sm:px-5 md:mt-5"
             >
-              Let&apos;s Build Together ↗
+              Explore Project Lab
+              <span aria-hidden="true" className="text-base leading-none transition-transform motion-safe:group-hover:translate-x-0.5">↗</span>
             </a>
           </div>
+
+          <div className="grid min-w-0 grid-cols-2 gap-2 md:gap-3">
+            {projectPreviews.map(({ name, src }) => (
+              <figure key={name} className="min-w-0 overflow-hidden rounded-lg border border-[#17100b]/20 bg-[#17100b] text-white md:rounded-xl">
+                <div className="relative h-12 bg-[#f6e4cc] max-md:[@media(max-height:650px)]:h-9 md:aspect-[16/10] md:h-auto">
+                  <Image
+                    src={src}
+                    alt=""
+                    fill
+                    sizes="(max-width: 767px) 40vw, (max-width: 1279px) 18vw, 20vw"
+                    className="object-cover object-top"
+                  />
+                </div>
+                <figcaption className="px-2 py-1.5 text-[11px] leading-tight font-semibold md:px-3 md:py-2.5 md:text-sm">
+                  {name}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
         </div>
       </div>
 
@@ -611,33 +515,6 @@ const GsapHorizontalScroll = () => {
           background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)",
         }}
       />
-
-      {/* Scroll progress indicator */}
-      <div
-        className="hscroll-progress"
-        style={{
-          position: "absolute",
-          bottom: "clamp(20px, 4vh, 40px)",
-          left: "clamp(20px, 4vw, 60px)",
-          right: "clamp(20px, 4vw, 60px)",
-          height: "2px",
-          backgroundColor: "rgba(255, 255, 255, 0.06)",
-          borderRadius: "1px",
-          overflow: "hidden",
-          zIndex: 10,
-        }}
-      >
-        <div
-          className="hscroll-progress-bar"
-          style={{
-            height: "100%",
-            width: "0%",
-            background: "linear-gradient(90deg, #0ae448, #00bae2)",
-            borderRadius: "1px",
-            transition: "none",
-          }}
-        />
-      </div>
 
       {/* Background ambient glow */}
       <div
@@ -656,10 +533,10 @@ const GsapHorizontalScroll = () => {
 
       {/* Scroll hint */}
       <div
-        className="hscroll-scroll-hint"
+        className="hscroll-scroll-hint pointer-events-none transition-opacity duration-300"
         style={{
           position: "absolute",
-          bottom: "clamp(55px, 8vh, 80px)",
+          bottom: "clamp(24px, 5vh, 48px)",
           right: "clamp(20px, 4vw, 60px)",
           zIndex: 10,
           display: "flex",
