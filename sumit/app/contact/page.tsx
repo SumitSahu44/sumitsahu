@@ -2,6 +2,7 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { ContactLinks, contactEmail } from "@/components/ContactLinks";
 
 export default function ContactPage() {
   return (
@@ -16,7 +17,7 @@ export default function ContactPage() {
           transition={{ duration: 0.6 }}
           className="text-4xl md:text-6xl font-black uppercase tracking-tight"
         >
-          Let's Build Together
+          Let&apos;s Build Together
         </motion.h1>
 
         <motion.p
@@ -35,7 +36,7 @@ export default function ContactPage() {
           className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-6"
         >
           <a
-            href="mailto:sumitsahu5328@gmail.com"
+            href={`mailto:${contactEmail}`}
             className="w-full sm:w-auto text-center px-8 py-3 bg-gradient-to-r from-[#ff8c00] to-[#ff4500] text-black font-bold uppercase text-xs tracking-widest rounded-full hover:shadow-[0_0_25px_rgba(255,140,0,0.5)] transition-all duration-300 transform active:scale-95"
           >
             Email Me
@@ -47,6 +48,9 @@ export default function ContactPage() {
             Back to Home
           </Link>
         </motion.div>
+        <div className="flex justify-center">
+          <ContactLinks />
+        </div>
       </div>
     </section>
   );

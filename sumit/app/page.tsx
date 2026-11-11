@@ -7,12 +7,15 @@ import GsapHorizontalScroll from "@/components/GsapHorizontalScroll";
 import MagneticGrid from "@/components/MagneticGrid";
 import FixedBgSection from "@/components/FixedBgSection";
 import ProjectsSection from "@/components/ProjectsSection";
+import WordPlayground from "@/components/WordPlayground";
 import Footer from "@/components/Footer";
+import ScrollReveals from "@/components/ScrollReveals";
 import { ServicesSection, ContactSection } from "@/components/PortfolioDetails";
 
 export default function Home() {
   return (
     <main>
+      <ScrollReveals />
       <Hero />
       {/* <OverviewSection /> */}
       {/* <WorkShowcase /> */}
@@ -25,6 +28,7 @@ export default function Home() {
       <div className="portfolio-gallery bg-[#080808]">
         <ProjectsSection />
         <ContactSection />
+        <WordPlayground />
         <Footer />
       </div>
     </main>

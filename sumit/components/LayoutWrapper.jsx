@@ -1,64 +1,46 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
-import { motion, useSpring, useMotionValue } from "framer-motion";
 import gsap from "gsap";
 import Lenis from "@studio-freight/lenis";
-import Navbar from "@/components/Navbar";
-import Link from "next/link";
+import Navbar, { homeNavItems } from "@/components/Navbar";
 
 const LayoutWrapper = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [timeString, setTimeString] = useState("");
 
   const preloaderRef = useRef(null);
   const mainRef = useRef(null);
   const menuCurtainRef = useRef(null);
 
-  // Menu items with high-end project images
-  const menuItems = [
-    { name: "Home", href: "/", previewImg: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800" },
-    { name: "Work", href: "/#work", previewImg: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=800" },
-    { name: "Services", href: "/#capabilities", previewImg: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800" },
-    { name: "About", href: "/about", previewImg: "/images/Hero-front.png" },
-    { name: "Tech Stack", href: "/#tech-stack", previewImg: "https://images.unsplash.com/photo-1512314889357-e157c22f938d?q=80&w=800" },
-    { name: "Contact", href: "/#contact", previewImg: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800" },
-  ];
-
-  // Motion values for magnetic menu hover image preview
-  const menuMouseX = useMotionValue(0);
-  const menuMouseY = useMotionValue(0);
-  const springX = useSpring(menuMouseX, { damping: 40, stiffness: 350 });
-  const springY = useSpring(menuMouseY, { damping: 40, stiffness: 350 });
-
-  const handleMenuMouseMove = (e) => {
-    if (!menuCurtainRef.current) return;
-    const rect = menuCurtainRef.current.getBoundingClientRect();
-    menuMouseX.set(e.clientX - rect.left);
-    menuMouseY.set(e.clientY - rect.top);
+  const closeMenu = () => {
+    window.lenis?.start();
+    setMenuOpen(false);
   };
 
-  // 1. Dynamic Clock for Indore Timezone
   useEffect(() => {
-    const updateClock = () => {
-      const options = {
-        timeZone: "Asia/Kolkata",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false,
-      };
-      setTimeString(new Date().toLocaleTimeString("en-US", options));
+    if (!menuOpen) return;
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    const onResize = () => {
+      if (desktop.matches) setMenuOpen(false);
     };
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
-  }, []);
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+    desktop.addEventListener("change", onResize);
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      desktop.removeEventListener("change", onResize);
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [menuOpen]);
 
   // 4. Global Lenis scroll manager
   useEffect(() => {
     if (loading) return;
+    const { pathname, hash } = window.location;
+    if (pathname === "/" && homeNavItems.some(({ href }) => href === "/" + hash)) {
+      document.getElementById(hash.slice(1))?.scrollIntoView();
+    }
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -100,26 +82,10 @@ const LayoutWrapper = ({ children }) => {
 
     const context = gsap.context(() => {
       const timeline = gsap.timeline({ onComplete: () => setLoading(false) });
-      const counter = overlay.querySelector(".intro-progress");
-      const progress = { value: 0 };
-      const duration = 1.35;
-
       timeline
-        .to(progress, {
-          value: 100,
-          duration,
-          ease: "none",
-          onUpdate: () => {
-            const label = `${Math.floor(progress.value)}%`;
-            if (counter.textContent !== label) counter.textContent = label;
-          },
-        }, 0)
         .to(".intro-signature", {
-          clipPath: "inset(0 -2% 0 0)", duration: duration * 0.8, ease: "none",
-        }, 0)
-        .to(".intro-flourish", {
-          strokeDashoffset: 0, duration: duration * 0.28, ease: "power1.out",
-        }, duration * 0.72)
+          clipPath: "inset(-20% 0% -20% 0%)", duration: 1.1, ease: "none",
+        })
         .to(overlay, { yPercent: -100, duration: 0.42, ease: "power3.inOut" }, "+=0.18");
 
       if (heroTitles.length) {
@@ -142,7 +108,7 @@ const LayoutWrapper = ({ children }) => {
     if (loading) return;
 
     if (menuOpen) {
-      gsap.timeline()
+      const opening = gsap.timeline()
         .set(menuCurtainRef.current, { display: "flex", opacity: 1 })
         .to("#menu-curtain-path", {
           attr: { d: "M 0 0 L 100 0 L 100 100 Q 50 120 0 100 Z" },
@@ -163,24 +129,15 @@ const LayoutWrapper = ({ children }) => {
           duration: 0.6,
           stagger: 0.08,
           ease: "power3.out"
-        }, "-=0.2")
-        .fromTo(".menu-info-item", {
-          opacity: 0,
-          x: -20
-        }, {
-          opacity: 1,
-          x: 0,
-          duration: 0.5,
-          stagger: 0.05,
-          ease: "power2.out"
-        }, "-=0.4");
+        }, "-=0.2");
+      return () => opening.kill();
     } else {
-      gsap.timeline({
+      const closing = gsap.timeline({
         onComplete: () => {
           gsap.set(menuCurtainRef.current, { display: "none" });
         }
       })
-      .to(".menu-link-item, .menu-info-item", {
+      .to(".menu-link-item", {
         opacity: 0,
         y: -30,
         duration: 0.3,
@@ -196,6 +153,7 @@ const LayoutWrapper = ({ children }) => {
         duration: 0.35,
         ease: "power2.out"
       });
+      return () => closing.kill();
     }
   }, [menuOpen, loading]);
 
@@ -208,41 +166,24 @@ const LayoutWrapper = ({ children }) => {
           className="fixed inset-0 z-[999] grid place-items-center overflow-hidden bg-[#050505] select-none"
         >
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,#ff8c000e,transparent_55%)]" />
-          <div className="relative flex flex-col items-center text-center">
-            <span
-              className="intro-signature signature-wordmark block px-8 text-[clamp(6rem,19vw,12rem)] leading-[1.05] text-white"
-              style={{ clipPath: "inset(0 100% 0 0)" }}
-            >
-              Sumit
-            </span>
-            <svg viewBox="0 0 180 24" className="-mt-3 h-6 w-32 text-[#ff8c00] sm:w-44" fill="none">
-              <path
-                className="intro-flourish"
-                d="M3 20C45 3 109 0 177 8"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                pathLength="1"
-                strokeDasharray="1"
-                strokeDashoffset="1"
-              />
-            </svg>
-            <div className="mt-6 flex items-center gap-5 font-mono text-[10px] uppercase tracking-[0.22em] text-white/55">
-              <span>Creative Developer</span>
-              <span className="intro-progress w-[5ch] text-right tabular-nums text-[#ff8c00]">0%</span>
-            </div>
-          </div>
+          <span
+            className="intro-signature signature-wordmark relative block px-[0.28em] py-[0.18em] text-[clamp(5rem,19vw,12rem)] leading-none text-white"
+            style={{ clipPath: "inset(-20% 100% -20% 0%)" }}
+          >
+            Sumit
+          </span>
         </div>
       )}
 
       {/* --- CREATIVE NAVBAR --- */}
-      <Navbar onMenuToggle={() => setMenuOpen(!menuOpen)} isMenuOpen={menuOpen} />
+      <Navbar onMenuToggle={() => setMenuOpen(open => !open)} isMenuOpen={menuOpen} onNavigate={closeMenu} />
 
       {/* --- PREMIUM FULLSCREEN MENU OVERLAY --- */}
       <div
         ref={menuCurtainRef}
-        onMouseMove={handleMenuMouseMove}
-        className="fixed inset-0 z-[90] text-white flex-col md:flex-row justify-between items-stretch overflow-hidden hidden"
+        id="mobile-navigation"
+        inert={!menuOpen}
+        className="fixed inset-0 z-[90] hidden flex-col overflow-hidden text-white"
         style={{ pointerEvents: menuOpen ? "auto" : "none" }}
       >
         {/* The SVG liquid curtain */}
@@ -250,109 +191,19 @@ const LayoutWrapper = ({ children }) => {
           <path id="menu-curtain-path" d="M 0 0 L 100 0 L 100 0 Q 50 0 0 0 Z" />
         </svg>
 
-        {/* Floating Mouse-Follow Preview Image */}
-        <motion.div
-          style={{
-            x: springX,
-            y: springY,
-            translateX: "-50%",
-            translateY: "-50%",
-          }}
-          animate={{
-            scale: hoveredIndex !== null ? 1 : 0,
-            opacity: hoveredIndex !== null ? 0.8 : 0,
-            rotate: hoveredIndex !== null ? 4 : 0,
-          }}
-          transition={{ duration: 0.3 }}
-          className="absolute top-0 left-0 pointer-events-none z-50 w-[320px] h-[200px] overflow-hidden rounded-3xl border border-white/10 shadow-[0_0_50px_rgba(255,140,0,0.15)] hidden md:block"
-        >
-          {hoveredIndex !== null && (
-            <img
-              src={menuItems[hoveredIndex].previewImg}
-              alt=""
-              className="w-full h-full object-cover scale-105"
-            />
-          )}
-        </motion.div>
-
-        {/* Content Container */}
-        <div className="relative z-10 w-full h-full flex flex-col md:flex-row items-stretch pt-28 pb-8 px-6 md:px-16 overflow-y-auto md:overflow-hidden">
-          
-          {/* Left Column: Clock, Socials, Details */}
-          <div className="w-full md:w-5/12 flex flex-col justify-between py-6 md:py-12 border-b md:border-b-0 md:border-r border-white/5 pr-0 md:pr-12 mb-6 md:mb-0 select-none">
-            <div className="space-y-4">
-              <span className="menu-info-item block text-[10px] font-mono tracking-[0.3em] text-[#ff8c00] uppercase font-bold">
-                Location & Time
-              </span>
-              <div className="menu-info-item text-xl md:text-3xl font-mono text-white/90">
-                INDORE, IN <span className="text-[#ff8c00] animate-pulse">/</span> {timeString || "00:00:00"}
-              </div>
+        <nav aria-label="Mobile navigation" data-lenis-prevent className="relative z-10 flex h-full w-full flex-col gap-5 overflow-y-auto px-6 pt-36 pb-6 sm:gap-6 sm:pt-40 md:pt-44">
+          {homeNavItems.map(({ name, href }) => (
+            <div key={href} className="shrink-0 overflow-hidden py-1">
+              <a
+                href={href}
+                onClick={closeMenu}
+                className="menu-link-item block w-fit text-[clamp(2rem,8vw,4rem)] leading-tight font-black tracking-tighter uppercase transition-colors hover:text-[#ff8c00]"
+              >
+                {name}
+              </a>
             </div>
-
-            <div className="space-y-6 mt-8 md:mt-0">
-              <div className="space-y-2">
-                <span className="menu-info-item block text-[10px] font-mono tracking-[0.3em] text-white/40 uppercase font-bold">
-                  Quick Contact
-                </span>
-                <a
-                  href="mailto:sumitsahu5328@gmail.com"
-                  className="menu-info-item block text-base md:text-lg text-white hover:text-[#ff8c00] transition-colors font-light"
-                >
-                  sumitsahu5328@gmail.com
-                </a>
-              </div>
-
-              <div className="space-y-2">
-                <span className="menu-info-item block text-[10px] font-mono tracking-[0.3em] text-white/40 uppercase font-bold">
-                  Social Channels
-                </span>
-                <div className="flex gap-4 md:gap-6 flex-wrap">
-                  {[
-                    { name: "GitHub", href: "https://github.com/SumitSahu44" },
-                    { name: "LinkedIn", href: "https://linkedin.com/in/sumitsahu44" },
-                    { name: "Instagram", href: "https://instagram.com" },
-                  ].map((soc) => (
-                    <a
-                      key={soc.name}
-                      href={soc.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="menu-info-item text-xs font-mono uppercase tracking-widest text-white/60 hover:text-[#ff8c00] transition-colors"
-                    >
-                      {soc.name}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Column: Navigation Links */}
-          <div className="w-full md:w-7/12 flex flex-col justify-center pl-0 md:pl-16 py-4">
-            <nav className="flex flex-col gap-2 md:gap-4">
-              {menuItems.map((item, index) => (
-                <div key={item.name} className="overflow-hidden py-1 md:py-2">
-                  <div className="menu-link-item">
-                    <Link
-                      href={item.href}
-                      onClick={() => setMenuOpen(false)}
-                      onMouseEnter={() => setHoveredIndex(index)}
-                      onMouseLeave={() => setHoveredIndex(null)}
-                      className={`inline-block text-4xl sm:text-6xl md:text-8xl font-black uppercase tracking-tighter transition-all duration-300 ${
-                        hoveredIndex !== null && hoveredIndex !== index
-                          ? "opacity-20 blur-[1px] translate-x-2"
-                          : "opacity-100 text-white"
-                      } hover:text-[#ff8c00]`}
-                    >
-                      {item.name}
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </nav>
-          </div>
-
-        </div>
+          ))}
+        </nav>
       </div>
 
       {/* --- MAIN PAGE CONTENT --- */}

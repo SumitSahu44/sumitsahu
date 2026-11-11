@@ -249,7 +249,7 @@ const WorkShowcase = () => {
         <div className="mt-20 md:mt-32 text-center relative z-20">
           <p className="text-gray-400 text-sm font-mono tracking-widest uppercase mb-4">Want to start a project?</p>
           <a 
-            href="mailto:sumitsahu5328@gmail.com" 
+            href="mailto:sumitkumarsahu141@gmail.com"
             className="group relative inline-flex items-center gap-3 text-2xl md:text-4xl font-black uppercase tracking-tight hover:text-[#ff8c00] transition-colors duration-300"
           >
             Let's build something epic

@@ -19,6 +19,7 @@ const FixedBgSection = () => {
     <div className="relative">
       {/* 1. THE FIXED BACKGROUND LAYER */}
       <section 
+        id="about"
         ref={containerRef}
         className="relative h-screen w-full overflow-hidden"
       >

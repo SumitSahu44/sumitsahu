@@ -101,7 +101,7 @@ export default function ProjectsSection({ standalone = false }: { standalone?: b
       className={`scroll-mt-24 px-6 pb-20 text-white md:px-12 md:pb-28 ${standalone ? "bg-[#080808] pt-32 md:pt-40" : "pt-8 md:pt-12"}`}
     >
       <div className="mx-auto max-w-7xl">
-        <header className="mb-10 flex flex-col justify-between gap-6 md:mb-14 md:flex-row md:items-end">
+        <header data-scroll-reveal="" className="mb-10 flex flex-col justify-between gap-6 md:mb-14 md:flex-row md:items-end">
           <div>
             <Heading id="work-heading" className="text-[clamp(2.9rem,7vw,7rem)] leading-[0.93] font-black tracking-tighter uppercase">
               Project <span className="text-[#ff8c00]">Lab.</span>
@@ -113,8 +113,8 @@ export default function ProjectsSection({ standalone = false }: { standalone?: b
         </header>
 
         <div className="grid gap-5 md:grid-cols-2">
-          {projects.map((project) => (
-            <article id={`project-${project.id}`} key={project.id} className="project-card flex scroll-mt-24 flex-col overflow-hidden rounded-xl border border-white/10 bg-[#101010] transition-colors hover:border-[#ff8c00]/40">
+          {projects.map((project, index) => (
+            <article id={`project-${project.id}`} key={project.id} data-scroll-reveal={index % 2 === 1 ? "second" : ""} className="project-card flex scroll-mt-24 flex-col overflow-hidden rounded-xl border border-white/10 bg-[#101010] transition-colors hover:border-[#ff8c00]/40">
               <ProjectCover project={project} />
               <div className="flex flex-1 flex-col p-5 sm:p-7">
                 <h3 className="text-3xl font-bold tracking-tight sm:text-4xl">{project.name}</h3>
@@ -142,12 +142,6 @@ export default function ProjectsSection({ standalone = false }: { standalone?: b
           ))}
         </div>
 
-        <div className="mt-10 flex flex-wrap items-center justify-between gap-5 border-t border-white/10 pt-6">
-          <span className="font-mono text-[10px] tracking-[0.15em] text-white/55 uppercase">01–04 / Selected websites</span>
-          <a href={standalone ? "/#contact" : "#contact"} className="inline-flex items-center gap-2 text-sm font-medium text-[#ff8c00] hover:text-white">
-            Discuss your project <ArrowUpRight size={16} aria-hidden="true" />
-          </a>
-        </div>
       </div>
     </section>
   );

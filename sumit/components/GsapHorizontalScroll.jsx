@@ -147,6 +147,15 @@ const GsapHorizontalScroll = () => {
       decor: ["bolt", "worm"],
     },
     {
+      id: "shopify",
+      words: [
+        { text: "Shopify", color: "green-gradient", size: "large", rotate: -3 },
+        { text: "Liquid", color: "purple", size: "large", rotate: 2 },
+        { text: "Custom Themes", color: "orange", size: "large" },
+      ],
+      decor: ["star", "diamond"],
+    },
+    {
       id: "group-5",
       words: [
         { text: "MongoDB", color: "purple-gradient", size: "large" },
@@ -375,8 +384,8 @@ const GsapHorizontalScroll = () => {
             <span className="text-[#ff8709]">stack.</span>
           </h2>
           <p className="mt-3 max-w-sm text-sm leading-relaxed text-white/70 md:mt-6 lg:text-base">
-            I build responsive websites and full-stack apps with React and Next.js.
-            Node.js and MongoDB power the backend, and GSAP brings the interface to life.
+            I build full-stack web apps with MongoDB, Express, React and Node.js.
+            For Shopify storefronts, I develop custom themes and reusable sections in Liquid.
           </p>
         </div>
 
